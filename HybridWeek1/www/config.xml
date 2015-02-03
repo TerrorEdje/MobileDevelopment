@@ -16,6 +16,8 @@
         PhoneGap Team
     </author>
 
+    <icon src="res/icon.ico" />
+
     <!-- Define the main entry-point to the application -->
     <content src="index.html" />
 
