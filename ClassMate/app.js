@@ -5,10 +5,33 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//Database
 var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/classmate');
+
+//Models
+require('./model/users');
+require('./model/classes');
+require('./model/messages');
+require('./model/attendances');
+require('./model/fillTestData')(mongoose,handleError);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var messages = require('./routes/messages');
+var attendances = require('./routes/attendances');
+var classes = require('./routes/classes');
+
+function handleError(req, res, statusCode, message){
+    console.log();
+    console.log('-------- Error handled --------');
+    console.log('Request Params: ' + JSON.stringify(req.params));
+    console.log('Request Body: ' + JSON.stringify(req.body));
+    console.log('Response sent: Statuscode ' + statusCode + ', Message "' + message + '"');
+    console.log('-------- /Error handled --------');
+    res.status(statusCode);
+    res.json(message);
+};
 
 var app = express();
 
@@ -24,8 +47,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req,res,next){
+    req.mongoose = mongoose;
+    next();
+});
+
 app.use('/', routes);
 app.use('/users', users);
+app.use('/messages', messages);
+app.use('/attendances', attendances);
+app.use('/classes', classes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
