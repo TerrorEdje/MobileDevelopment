@@ -14,6 +14,7 @@ require('./model/users');
 require('./model/classes');
 require('./model/messages');
 require('./model/attendances');
+require('./model/courses');
 require('./model/fillTestData')(mongoose,handleError);
 
 var routes = require('./routes/index');
@@ -21,6 +22,7 @@ var users = require('./routes/users');
 var messages = require('./routes/messages');
 var attendances = require('./routes/attendances');
 var classes = require('./routes/classes');
+var courses = require('./routes/courses');
 
 function handleError(req, res, statusCode, message){
     console.log();
@@ -57,6 +59,7 @@ app.use('/users', users);
 app.use('/messages', messages);
 app.use('/attendances', attendances);
 app.use('/classes', classes);
+app.use('/courses', courses);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
