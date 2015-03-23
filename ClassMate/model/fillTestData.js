@@ -6,6 +6,20 @@ function saveCallback(err){
 	}
 };
 
+function fillTestClasses(callback){
+	Class.find({}, function(err,data){
+		if(data.length == 0){
+			console.log('Creating classes testdata');
+			new Class({name:'Mobile Development 1', classId:'1',description:'Hybrid smartphone apps bouwen'}).save(saveCallback);
+			new Class({name:'Cloud Services', classId:'2',description:'Cloud services bouwen'}).save(saveCallback);
+			new Class({name:'Mobile Development 2', classId:'3',description:'Native smartphone apps bouwen'}).save(saveCallback);
+		} else {
+			console.log('Skipping create classes testdata, already present');
+		}		
+		if(callback) { callback(); }
+	});
+};
+
 function fillTestUsers(callback){
 	User.find({}, function(err,data){
 		if(data.length == 0){
@@ -16,22 +30,6 @@ function fillTestUsers(callback){
 		} else {
 			console.log('Skipping create users testdata, already present');
 		}
-		
-		if(callback) { callback(); }
-	});
-};
-
-function fillTestClasses(callback){
-	Class.find({}, function(err,data){
-		if(data.length == 0){
-			console.log('Creating classes testdata');
-			new Class({name:'Mobile Development 1', classId:'1',description:'Hybrid smartphone apps bouwen'}).save(saveCallback);
-			new Class({name:'Cloud Services', classId:'2',description:'Cloud services bouwen'}).save(saveCallback);
-			new Class({name:'Mobile Development 2', classId:'3',description:'Native smartphone apps bouwen'}).save(saveCallback);
-		} else {
-			console.log('Skipping create classes testdata, already present');
-		}
-		
 		if(callback) { callback(); }
 	});
 };
@@ -47,7 +45,7 @@ function fillTestAttendances(callback){
 			});		
 		} else {
 			console.log('Skipping create attendances testdata, already present');
-		}
+		}		
 		if(callback) { callback(); }
 	});
 };
@@ -63,8 +61,7 @@ function fillTestMessages(callback){
 			});		
 		} else {
 			console.log('Skipping create messages testdata, already present');
-		}
-		
+		}	
 		if(callback) { callback(); }
 	});
 };
@@ -76,5 +73,5 @@ module.exports = function(mongoose){
 	Class = mongoose.model('Class');
 	
 
-	fillTestUsers(fillTestClasses(fillTestAttendances(fillTestMessages)));
+	fillTestClasses(fillTestUsers(fillTestMessages(fillTestAttendances)));
 }
