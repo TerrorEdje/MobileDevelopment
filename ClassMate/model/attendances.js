@@ -13,7 +13,6 @@ var attendanceSchema = new Schema({
     	type: [Number], // [<longitude>],[<latitude>]
     	index: '2d' // create the geospatial index
     }
-
 });
 
 module.exports = mongoose.model('Attendance', attendanceSchema);

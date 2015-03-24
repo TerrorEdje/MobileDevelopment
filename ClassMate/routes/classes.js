@@ -39,6 +39,24 @@ router.route('/:id').delete(function(req, res) {
   res.send({ message: 'Class Deleted'});
 });
 
+/* UPDATE course by id */
+router.route('/:id').put(function(req, res) {
+  Class.findOne({ _id: req.params.id}, function(err, classe) {
+    if (err) {
+        return res.send(err);
+    } 
+    classe.week = req.body.week;
+    classe.location = req.body.location;
+    classe.courseId = req.body.courseId;
+    classe.save(function(err) {
+      if (err) {
+        return res.send(err);
+      }
+    });
+    res.send({ message: 'Class Updated' });
+  });
+});
+
 /* GET message list by class id */
 router.route('/:id/messages').get(function(req, res) {
   	Class.findOne({ _id: req.params.id}, function(err, classe) {

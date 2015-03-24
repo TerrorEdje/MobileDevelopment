@@ -1,5 +1,3 @@
-var User;
-
 function saveCallback(err){
 	if (err){
 		console.log('Fill testdata failed, reason: %s', err);
@@ -32,20 +30,6 @@ function fillTestCourses(callback){
 		} else {
 			console.log('Skipping create courses testdata, already present');
 		}		
-		if(callback) { callback(); }
-	});
-};
-
-function fillTestUsers(callback){
-	User.find({}, function(err,data){
-		if(data.length == 0){
-			console.log('Creating users testdata');
-			new User({name:'Edwin'}).save(saveCallback);
-			new User({name:'Yannik'}).save(saveCallback);
-			new User({name:'Yorick'}).save(saveCallback);
-		} else {
-			console.log('Skipping create users testdata, already present');
-		}
 		if(callback) { callback(); }
 	});
 };
@@ -83,12 +67,11 @@ function fillTestMessages(callback){
 };
 
 module.exports = function(mongoose){
-	User = mongoose.model('User');
 	Attendance = mongoose.model('Attendance');
 	Message = mongoose.model('Message');
 	Class = mongoose.model('Class');
 	Course = mongoose.model('Course');
 	
 
-	fillTestCourses(fillTestClasses(fillTestUsers(fillTestMessages(fillTestAttendances))));
+	fillTestCourses(fillTestClasses(fillTestMessages(fillTestAttendances)));
 }

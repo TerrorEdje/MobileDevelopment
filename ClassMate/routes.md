@@ -1,7 +1,8 @@
 #ClassMate REST
 In this list all the routes to the REST service are given.
 A GET request shows the format of the JSON that is returned.
-A POST request shows the format of the request that is send to the server
+A POST request shows the format of the request that is send to the server.
+A PUT request shows the format of the request that is send to the server.
 ##Courses
 ###GET /courses/
 ```
@@ -52,6 +53,11 @@ userFullName=Edwin+Hattink&userId=egjhatti%40avans.nl&name=Intercultural+Communi
 }
 ```
 ###DELETE /courses/:id/
+
+###PUT /courses/:id/
+```
+userFullName=Edwin+Hattink&userId=egjhatti%40avans.nl&courseId=AII-1415C-INWEBS5&description=Cloud+services+bouwen+is+awesome
+```
 
 ###GET /courses/:id/classes/
 ```
@@ -121,6 +127,11 @@ week=4&location=OB209&courseId=5510725f81b891200d7cbe5a
 }
 ```
 ###DELETE /classes/:id/
+
+###PUT /classes/:id/
+```
+week=1&location=OB209&courseId=5510725f81b891200d7cbe5a
+```
 
 ###GET /classes/:id/messages/
 ```
@@ -241,6 +252,11 @@ message=I love this class.&userFullName=Edwin Hattink&userId=egjhatti@avans.nl&c
 ```
 ###DELETE /messages/:id/
 
+###PUT /messages/:id/
+```
+userId=egjhatti%40avans.nl&classId=5510726a770dc9dc1a5fa3a7&userFullName=Edwin+Hattink&message=Who+is+coming+to+Mobile+Development+tomorrow%3F&time=2015-03-23T20%3A09%3A34.456Z
+```
+
 ##Attendances
 ###GET /attendances/
 ```
@@ -295,3 +311,8 @@ status=2&userFullName=Edwin+Hattink&userId=egjhatti%40avans.nl&classId=550db8b6b
 }
 ```
 ###DELETE /attendances/:id/
+
+###PUT /attendances/:id/
+```
+userId=egjhatti%40avans.nl&classId=5510726a770dc9dc1a5fa3a7&userFullName=Edwin+Hattink&status=2&reason=I+missed+the+train+lol
+```
