@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Class = require('../model/classes');
 
+/* GET class list */
 router.route('/').get(function(req, res) {
   	Class.find(function(err, classes) {
     	if (err) {
@@ -11,6 +12,7 @@ router.route('/').get(function(req, res) {
   	});
 });
 
+/* GET class by id */
 router.route('/:id').get(function(req, res) {
   	Class.findOne({ _id: req.params.id}, function(err, classe) {
     	if (err) {
@@ -20,6 +22,7 @@ router.route('/:id').get(function(req, res) {
   	});
 });
 
+/* POST class */
 router.route('/').post(function(req, res) {
   	var classe = new Class(req.body);
   	classe.save(function(err) {
@@ -30,6 +33,13 @@ router.route('/').post(function(req, res) {
   	});
 });
 
+/* DELETE class by id */
+router.route('/:id').delete(function(req, res) {
+  Class.findOne({ _id: req.params.id }).remove().exec();
+  res.send({ message: 'Class Deleted'});
+});
+
+/* GET message list by class id */
 router.route('/:id/messages').get(function(req, res) {
   	Class.findOne({ _id: req.params.id}, function(err, classe) {
     	if (err) {
@@ -44,6 +54,7 @@ router.route('/:id/messages').get(function(req, res) {
   	});
 });
 
+/* GET attendance list by class id */
 router.route('/:id/attendances').get(function(req, res) {
   	Class.findOne({ _id: req.params.id}, function(err, classe) {
     	if (err) {

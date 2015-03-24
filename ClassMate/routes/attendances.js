@@ -22,6 +22,12 @@ router.route('/:id').get(function(req, res) {
   	});
 });
 
+/* DELETE attendances by id */
+router.route('/:id').delete(function(req, res) {
+  Attendance.findOne({ _id: req.params.id }).remove().exec();
+  res.send({ message: 'Attendance Deleted'});
+});
+
 /* POST attendance */
 router.route('/').post(function(req, res) {
   	var attendance = new Attendance(req.body);

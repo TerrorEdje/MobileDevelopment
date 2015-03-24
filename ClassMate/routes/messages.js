@@ -22,6 +22,12 @@ router.route('/:id').get(function(req, res) {
   	});
 });
 
+/* DELETE message by id */
+router.route('/:id').delete(function(req, res) {
+  Message.findOne({ _id: req.params.id }).remove().exec();
+  res.send({ message: 'Message Deleted'});
+});
+
 /* POST message */
 router.route('/').post(function(req, res) {
   	var message = new Message(req.body);

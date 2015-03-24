@@ -1,61 +1,57 @@
 var express = require('express');
 var router = express.Router();
-var Class = require('../model/classes');
+var Course = require('../model/courses');
 
+/* GET course list */
 router.route('/').get(function(req, res) {
-  	Class.find(function(err, classes) {
-    	if (err) {
-      		return res.send(err);
-    	}
- 		res.json(classes);
-  	});
+	Course.find(function(err, courses) {
+  	if (err) {
+    		return res.send(err);
+  	}
+		res.json(courses);
+	});
 });
 
+/* GET course by id */
 router.route('/:id').get(function(req, res) {
-  	Class.findOne({ _id: req.params.id}, function(err, classe) {
-    	if (err) {
-      		return res.send(err);
-    	} 
-    	res.json(classe);
-  	});
+	Course.findOne({ _id: req.params.id}, function(err, course) {
+  	if (err) {
+    		return res.send(err);
+  	} 
+  	res.json(course);
+	});
 });
 
+/* POST course */
 router.route('/').post(function(req, res) {
-  	var classe = new Class(req.body);
-  	classe.save(function(err) {
-    	if (err) {
-      		return res.send(err);
-    	} 
-    	res.send({ message: 'Class Added' });
-  	});
+	var course = new Course(req.body);
+	course.save(function(err) {
+  	if (err) {
+    		return res.send(err);
+  	} 
+  	res.send({ message: 'Course Added' });
+	});
 });
 
-router.route('/:id/messages').get(function(req, res) {
-  	Class.findOne({ _id: req.params.id}, function(err, classe) {
-    	if (err) {
-      		return res.send(err);
-    	} 
-    	Message.find({ classId: classe._id },function(err, messages) {
-    		if (err) {
-      			return res.send(err);
-    		}
- 			res.json(messages);
-  		});
-  	});
+/* DELETE course by id */
+router.route('/:id').delete(function(req, res) {
+  Course.findOne({ _id: req.params.id }).remove().exec();
+  res.send({ message: 'Course Deleted'});
 });
 
-router.route('/:id/attendances').get(function(req, res) {
-  	Class.findOne({ _id: req.params.id}, function(err, classe) {
-    	if (err) {
-      		return res.send(err);
-    	} 
-    	Attendance.find({ classId: classe._id },function(err, attendances) {
-    		if (err) {
-      			return res.send(err);
-    		}
- 			res.json(attendances);
-  		});
-  	});
+/* GET class list by course id */
+router.route('/:id/classes').get(function(req, res) {
+	Course.findOne({ _id: req.params.id}, function(err, course) {
+  	if (err) {
+    		return res.send(err);
+  	} 
+  	Class.find({ courseId: course._id },function(err, classes) {
+  		if (err) {
+    			return res.send(err);
+  		}
+			res.json(classes);
+		});
+	});
 });
 
 module.exports = router;
