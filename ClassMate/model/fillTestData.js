@@ -1,3 +1,5 @@
+var async = require('async');
+
 function saveCallback(err){
 	if (err){
 		console.log('Fill testdata failed, reason: %s', err);
@@ -21,6 +23,8 @@ function fillTestClasses(callback){
 };
 
 function fillTestCourses(callback){
+	
+Course.batchInsert([], function(err){ callback(); })
 	Course.find({}, function(err,data){
 		if(data.length == 0){
 			console.log('Creating courses testdata');
@@ -72,6 +76,10 @@ module.exports = function(mongoose){
 	Class = mongoose.model('Class');
 	Course = mongoose.model('Course');
 	
-
-	fillTestCourses(fillTestClasses(fillTestMessages(fillTestAttendances)));
+	async.waterfall(
+		fillTestCourses,
+		fillTestClasses,
+		fillTestMessages,
+		fillTestAttendances
+		);
 }
