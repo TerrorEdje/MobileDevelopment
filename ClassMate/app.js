@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//Passport
+require('./config/passport')(passport); // pass passport for configuration
+
 //Database
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/classmate');
