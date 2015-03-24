@@ -3,3 +3,12 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  p
+    a(href="/login" class="btn btn-default")
+      span(class="fa fa-user") Local Login
+  p 
+    a(href="/signup" class="btn btn-default")
+      span(class="fa fa-user") Local Signup
+  p 
+    a(href="/auth/google" class="btn btn-danger")
+      span(class="fa fa-google-plus") Google
