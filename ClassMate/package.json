@@ -20,7 +20,8 @@
     "passport-local": "*",
     "connect-flash": "*",
     "connect-roles": "*",
-    "bcrypt-nodejs": "*"
+    "bcrypt-nodejs": "*",
+    "async":"*"
   },
   "devDependencies": {
     "chai": "^2.1.2",

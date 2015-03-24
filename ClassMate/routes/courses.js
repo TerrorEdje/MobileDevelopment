@@ -1,36 +1,45 @@
 var express = require('express');
 var router = express.Router();
-var Course = require('../model/courses');
+var Course = require('../models/course');
 
 /* GET course list */
 router.route('/').get(function(req, res) {
-	Course.find(function(err, courses) {
-  	if (err) {
-    		return res.send(err);
-  	}
-		res.json(courses);
-	});
+  Course.find({}, {creator:1, name:1, description:1}, function(err, data){
+    if (err) {
+      return res.send(err);
+    }
+    res.json(data);
+  });
 });
 
 /* GET course by id */
 router.route('/:id').get(function(req, res) {
-	Course.findOne({ _id: req.params.id}, function(err, course) {
-  	if (err) {
-    		return res.send(err);
-  	} 
-  	res.json(course);
-	});
+	Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1}, function(err, data){
+    if (err) {
+      return res.send(err);
+    }
+    res.json(data);
+  });
 });
 
-/* POST course */
-router.route('/').post(function(req, res) {
-	var course = new Course(req.body);
-	course.save(function(err) {
-  	if (err) {
-    		return res.send(err);
-  	} 
-  	res.send({ message: 'Course Added' });
-	});
+/* GET classes by course id */
+router.route('/:id/classes').get(function(req, res) {
+  Course.findOne({ _id: req.params.id }, function(err, data){
+    if (err) {
+      return res.send(err);
+    }
+    res.json({ classes: data.classes });
+  });
+});
+
+/* GET messages by class and message id */
+router.route('/:id/classes').get(function(req, res) {
+  Course.findOne({ _id: req.params.id },{ classes:1, _id:0}, function(err, data){
+    if (err) {
+      return res.send(err);
+    }
+    res.json(data);
+  });
 });
 
 /* DELETE course by id */
