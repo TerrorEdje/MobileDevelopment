@@ -30,9 +30,9 @@ function fillTestData(callback){
 						date: new Date(),
 						location: 'OB209',
 						description: 'Presentatie',
-						message: [{
+						messages: [{
 							user: doc._id,
-							message: 'Usually nobody comes, so who is coming today?',
+							message: 'Usually nobody comes, so who is coming today?'
 						}],
 						attendances: [{
 							user: doc._id

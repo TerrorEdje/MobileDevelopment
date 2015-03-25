@@ -14,8 +14,18 @@ function makeRequest(route, statusCode, done){
 		});
 };
 
-describe('Testing classmate route', function(){
+describe('Testing courses route', function(){
 	it('should return courses', function(done){
+		makeRequest('/api/courses/',200,function(err,res) {
+			if (err) { return done(err); }
+			expect(res.body).to.be.json;
+			done();
+		});
+	});
+});
+
+describe('Testing users route', function(){
+	it('should return users', function(done){
 		makeRequest('/api/courses/',200,function(err,res) {
 			if (err) { return done(err); }
 			expect(res.body).to.be.json;

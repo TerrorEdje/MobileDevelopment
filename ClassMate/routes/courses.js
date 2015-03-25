@@ -16,7 +16,7 @@ router.route('/').get(function(req, res) {
 router.route('/:id').get(function(req, res) {
 	Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1}, function(err, data){
     if (err) {
-      return res.send(err);
+      	return res.send(err);
     }
     res.json(data);
   });
@@ -24,28 +24,63 @@ router.route('/:id').get(function(req, res) {
 
 /* GET classes by course id */
 router.route('/:id/classes').get(function(req, res) {
-  Course.findOne({ _id: req.params.id }, function(err, data){
-    if (err) {
-      return res.send(err);
-    }
-    res.json({ classes: data.classes });
-  });
+  	Course.findOne({ _id: req.params.id }, function(err, data){
+    	if (err) {
+      	return res.send(err);
+    	}
+    	res.json({ classes: data.classes });
+  	});
 });
 
-/* GET messages by class and message id */
-router.route('/:id/classes').get(function(req, res) {
-  Course.findOne({ _id: req.params.id },{ classes:1, _id:0}, function(err, data){
-    if (err) {
-      return res.send(err);
-    }
-    res.json(data);
-  });
+/* GET participants by course id */
+router.route('/:id/participants').get(function(req, res) {
+  	Course.findOne({ _id: req.params.id }, function(err, data){
+    	if (err) {
+      	return res.send(err);
+    	}
+    	res.json({ classes: data.participants });
+  	});
 });
 
-/* DELETE course by id */
-router.route('/:id').delete(function(req, res) {
-  Course.findOne({ _id: req.params.id }).remove().exec();
-  res.send({ message: 'Course Deleted'});
+/* GET messages by class and course id */
+router.route('/:id/classes/:cid/messages').get(function(req, res) {
+  	Course.findOne({ _id: req.params.id }, function(err, data){
+    	if (err) {
+      	return res.send(err);
+    	}
+    	var lookup = {};
+    	for (var i = 0, len = data.classes.length; i < len; i++) {
+      		lookup[data.classes[i]._id] = data.classes[i];
+    	}
+   	 	res.json( lookup[req.params.cid].messages );
+  	});
+});
+
+/* GET attendances by class and course id */
+router.route('/:id/classes/:cid/attendances').get(function(req, res) {
+  	Course.findOne({ _id: req.params.id }, function(err, data){
+    	if (err) {
+      	return res.send(err);
+    	}
+    	var lookup = {};
+    	for (var i = 0, len = data.classes.length; i < len; i++) {
+      		lookup[data.classes[i]._id] = data.classes[i];
+    	}
+   	 	res.json( lookup[req.params.cid].attendances );
+  	});
+});
+
+router.route('/:id/classes/:cid/attendances').get(function(req, res) {
+  	Course.findOne({ _id: req.params.id }, function(err, data){
+    	if (err) {
+      	return res.send(err);
+    	}
+    	var lookup = {};
+    	for (var i = 0, len = data.classes.length; i < len; i++) {
+      		lookup[data.classes[i]._id] = data.classes[i];
+    	}
+   	 	res.json( lookup[req.params.cid].attendances );
+  	});
 });
 
 /* UPDATE course by id */
