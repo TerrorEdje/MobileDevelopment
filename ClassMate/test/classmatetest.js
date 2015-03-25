@@ -1,21 +1,25 @@
-var request = require('supertest');
+var ClassMateApp = require('../app.js');
+var request = require('supertest')(ClassMateApp);
 var expect = require('chai').expect;
 var should = require('chai').should();
 
-var app = require('express')();
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/classmate');
+function makeRequest(route, statusCode, done){
+	request
+		.get(route)
+		.expect(statusCode)
+		.end(function(err, res){
+			if(err){ return done(err); }
+
+			done(null, res);
+		});
+};
 
 describe('Testing classmate route', function(){
-	var url = 'http://localhost:3000';
-	describe('courses', function(){
-		it('should return courses', function(done){
-			request(url).get('/api/courses').end(function(err,res){
-				if (err) { throw err; }
-				res.should.be.json;
-				res.status.should.have.equal(200);
-				done();
-			});
+	it('should return courses', function(done){
+		makeRequest('/api/courses/',200,function(err,res) {
+			if (err) { return done(err); }
+			expect(res.body).to.be.json;
+			done();
 		});
 	});
 });
