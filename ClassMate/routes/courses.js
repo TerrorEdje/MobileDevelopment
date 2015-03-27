@@ -8,7 +8,8 @@ router.route('/').get(function(req, res) {
     if (err) {
       return res.send(err);
     }
-    res.json(data);
+    res.json({ courses: data});
+    res.status(200);
   });
 });
 
@@ -19,6 +20,7 @@ router.route('/:id').get(function(req, res) {
       	return res.send(err);
     }
     res.json(data);
+    res.status(200);
   });
 });
 
@@ -29,6 +31,7 @@ router.route('/:id/classes').get(function(req, res) {
       	return res.send(err);
     	}
     	res.json({ classes: data.classes });
+    	res.status(200);
   	});
 });
 
@@ -38,11 +41,12 @@ router.route('/:id/participants').get(function(req, res) {
     	if (err) {
       	return res.send(err);
     	}
-    	res.json({ classes: data.participants });
+    	res.json({ participants: data.participants });
+    	res.status(200);
   	});
 });
 
-/* GET messages by class and course id */
+/* GET messages by course and class id */
 router.route('/:id/classes/:cid/messages').get(function(req, res) {
   	Course.findOne({ _id: req.params.id }, function(err, data){
     	if (err) {
@@ -52,11 +56,12 @@ router.route('/:id/classes/:cid/messages').get(function(req, res) {
     	for (var i = 0, len = data.classes.length; i < len; i++) {
       		lookup[data.classes[i]._id] = data.classes[i];
     	}
-   	 	res.json( lookup[req.params.cid].messages );
+   	 	res.json({ messages: lookup[req.params.cid].messages });
+   	 	res.status(200);
   	});
 });
 
-/* GET attendances by class and course id */
+/* GET attendances by course and class id */
 router.route('/:id/classes/:cid/attendances').get(function(req, res) {
   	Course.findOne({ _id: req.params.id }, function(err, data){
     	if (err) {
@@ -66,11 +71,13 @@ router.route('/:id/classes/:cid/attendances').get(function(req, res) {
     	for (var i = 0, len = data.classes.length; i < len; i++) {
       		lookup[data.classes[i]._id] = data.classes[i];
     	}
-   	 	res.json( lookup[req.params.cid].attendances );
+   	 	res.json({ attendances: lookup[req.params.cid].attendances });
+   	 	res.status(200);
   	});
 });
 
-router.route('/:id/classes/:cid/attendances').get(function(req, res) {
+/* POST message by course and class id */
+router.route('/:id/classes/:cid/messages').post(function(req, res) {
   	Course.findOne({ _id: req.params.id }, function(err, data){
     	if (err) {
       	return res.send(err);
@@ -79,43 +86,92 @@ router.route('/:id/classes/:cid/attendances').get(function(req, res) {
     	for (var i = 0, len = data.classes.length; i < len; i++) {
       		lookup[data.classes[i]._id] = data.classes[i];
     	}
-   	 	res.json( lookup[req.params.cid].attendances );
+    	lookup[req.params.cid].messages.push(req.body);
+   	 	data.save(function(err, savedCourse){
+        if(err){ return handleError(req, res, 500, err); }
+    		else {
+      			res.status(201);
+      			res.send({ message: 'Message added' });
+   			}
+  		});
+  	});
+});
+
+/* POST participant by course id */
+router.route('/:id/participants').post(function(req, res) {
+  	Course.findOne({ _id: req.params.id }, function(err, data){
+    	if (err) {
+      	return res.send(err);
+    	}
+    	data.participants.push(req.body);
+    	data.save(function(err, savedCourse){
+        if(err){ return handleError(req, res, 500, err); }
+    		else {
+      			res.status(201);
+      			res.send({ message: 'Participant added' });
+   			}
+  		});
+  	});
+});
+
+/* POST attendance by course and class id */
+router.route('/:id/classes/:cid/attendances').post(function(req, res) {
+  	Course.findOne({ _id: req.params.id }, function(err, data){
+    	if (err) {
+      		return res.send(err);
+    	}
+    	var lookup = {};
+    	for (var i = 0, len = data.classes.length; i < len; i++) {
+      		lookup[data.classes[i]._id] = data.classes[i];
+    	}
+    	lookup[req.params.cid].attendances.push(req.body);
+   	 	data.save(function(err, savedCourse){
+        if(err){ return handleError(req, res, 500, err); }
+    		else {
+      			res.status(201);
+      			res.send({ message: 'Attendance added' });
+   			}
+  		});
   	});
 });
 
 /* UPDATE course by id */
-router.route('/:id').put(function(req, res) {
-  Course.findOne({ _id: req.params.id}, function(err, course) {
-    if (err) {
-        return res.send(err);
-    } 
-    course.userId = req.body.userId;
-    course.userFullName = req.body.userFullName;
-    course.name = req.body.name;
-    course.courseId = req.body.courseId;
-    course.description = req.body.description;
-    course.save(function(err) {
-      if (err) {
-        return res.send(err);
-      }
-    });
-    res.send({ message: 'Course Updated' });
-  });
+router.route('/:id/').put(function(req, res) {
+  	Course.findOne({ _id: req.params.id }, function(err, course) {
+	    if (err) {
+	        return res.send(err);
+	    } 
+	    course.save(req.body,function(err) {
+	      	if (err) {
+	        	return res.send(err);
+	      	}
+	      	res.status(200);
+	      	res.send({ message: 'Course updated' });
+	    });
+  	});
+});
+
+/* POST course */
+router.route('/:id/').post(function(req, res) {
+  	var course = new Course(req.body);
+  	course.save(function(err) {
+  		if (err)
+  		{
+  			return res.send(err);
+  		}
+  		res.send({ message: 'Course Added' });
+  	})
 });
 
 
-/* GET class list by course id */
-router.route('/:id/classes').get(function(req, res) {
-	Course.findOne({ _id: req.params.id}, function(err, course) {
-  	if (err) {
-    		return res.send(err);
-  	} 
-  	Class.find({ courseId: course._id },function(err, classes) {
-  		if (err) {
-    			return res.send(err);
-  		}
-			res.json(classes);
-		});
+/* DELETE course by id */
+router.route('/:id/classes').delete(function(req, res) {
+	Course.remove(req.params.id, function(err) {
+		if (err) {
+			return res.send(err);
+		};
+		res.status(200);
+		res.send({ message: 'Course deleted'});
 	});
 });
 

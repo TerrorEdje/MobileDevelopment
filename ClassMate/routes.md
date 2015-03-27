@@ -1,55 +1,33 @@
 #ClassMate REST
 In this list all the routes to the REST service are given.
 A GET request shows the format of the JSON that is returned.
-A POST request shows the format of the request that is send to the server.
+A POST request shows the format of the request that is send to the server, this is together with the type.
 A PUT request shows the format of the request that is send to the server.
 ##Courses
-###GET /courses/
+###GET /api/courses/
 ```
-[
-    {
-        "_id": "5510725f81b891200d7cbe5a",
-        "userFullName": "Edwin Hattink",
-        "userId": "egjhatti@avans.nl",
-        "name": "Mobile Development 1",
-        "courseId": "AII-1415C-INMBD1",
-        "description": "Hybrid smartphone apps bouwen",
-        "__v": 0
-    },
-    {
-        "_id": "5510725f81b891200d7cbe5b",
-        "userFullName": "Edwin Hattink",
-        "userId": "egjhatti@avans.nl",
-        "name": "Cloud Services",
-        "courseId": "AII-1415C-INWEBS5",
-        "description": "Cloud services bouwen",
-        "__v": 0
-    },
-    {
-        "_id": "5510725f81b891200d7cbe5c",
-        "userFullName": "Edwin Hattink",
-        "userId": "egjhatti@avans.nl",
-        "name": "Mobile Development 2",
-        "courseId": "AII-1415C-INMBD2",
-        "description": "Native smartphone apps bouwen",
-        "__v": 0
-    }
-]
+{
+    "courses": [
+        {
+            "_id": "55129910f157f5481f58009f",
+            "creator": "5512990ff157f5481f58009c",
+            "name": "Mobile Development 1",
+            "description": "Building hybrid apps"
+        }
+    ]
+}
 ```
 ###POST /courses/
 ```
 userFullName=Edwin+Hattink&userId=egjhatti%40avans.nl&name=Intercultural+Communications&courseId=AII-1415C-ININCC&description=This+course+will+help+students+develop+cross-cultural+understanding+in+professional+situations%2C+especially+for+the+IT+business.+It+will+also+provide+students+with+basic+tools+to+make+these+situations+a+success.+Students+will+be+able+to+reflect+on+their+own+personal+performance.
 ```
-###GET /courses/:id/
+###GET /api/courses/:id/
 ```
 {
-    "_id": "5510725f81b891200d7cbe5a",
-    "userFullName": "Edwin Hattink",
-    "userId": "egjhatti@avans.nl",
+    "_id": "55129910f157f5481f58009f",
+    "creator": "5512990ff157f5481f58009c",
     "name": "Mobile Development 1",
-    "courseId": "AII-1415C-INMBD1",
-    "description": "Hybrid smartphone apps bouwen",
-    "__v": 0
+    "description": "Building hybrid apps"
 }
 ```
 ###DELETE /courses/:id/
