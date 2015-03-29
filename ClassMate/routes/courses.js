@@ -30,6 +30,10 @@ router.route('/:id/classes').get(function(req, res) {
     	if (err) {
       	return res.send(err);
     	}
+        for (var i = 0, len = data.classes.length; i < len; i++) {
+            data.classes[i].messages = null;
+            data.classes[i].attendances = null;
+        }
     	res.json({ classes: data.classes });
     	res.status(200);
   	});
@@ -135,7 +139,7 @@ router.route('/:id/classes/:cid/attendances').post(function(req, res) {
   	});
 });
 
-/* UPDATE course by id */
+/* PUT course by id */
 router.route('/:id/').put(function(req, res) {
   	Course.findOne({ _id: req.params.id }, function(err, course) {
 	    if (err) {
@@ -160,12 +164,13 @@ router.route('/:id/').post(function(req, res) {
   			return res.send(err);
   		}
   		res.send({ message: 'Course Added' });
+        res.status(201);
   	})
 });
 
 
 /* DELETE course by id */
-router.route('/:id/classes').delete(function(req, res) {
+router.route('/:id/').delete(function(req, res) {
 	Course.remove(req.params.id, function(err) {
 		if (err) {
 			return res.send(err);

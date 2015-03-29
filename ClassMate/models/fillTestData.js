@@ -7,7 +7,7 @@ function saveCallback(err){
 };
 
 function fillTestData(callback){
-	Course.find({}, function(err,data){
+	User.find({}, function(err,data){
 		if(data.length == 0){
 			console.log('Creating users testdata');
 			new User({ name:'Edwin Hattink', local:{ email: 'edwinhattink@me.com', password: '$2a$08$/enbBytoLjCtPamq.DzB9eNlrI2YZ4CcuN6LJwNkwJ17Ro17UbKrC'} }).save(saveCallback);
