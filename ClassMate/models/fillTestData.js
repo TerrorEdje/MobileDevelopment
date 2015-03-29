@@ -44,10 +44,18 @@ function fillTestData(callback){
 			console.log('Skipping create courses testdata, already present');
 		}		
 		User.findOne({ 'name' : 'Edwin Hattink' }, function (err, doc) {
-			Course.findOne({'name' : 'Mobile Development 1'}, function (err, doccourse) {
-				doc.courses.push(doccourse._id);
-				doc.save(saveCallback);
-			});
+			if (doc.courses.length == 0) {
+				console.log('Creating courses in users testdata');
+				Course.findOne({'name' : 'Mobile Development 1'}, function (err, doccourse) {
+					doc.courses.push(doccourse._id);
+					doc.save(saveCallback);
+				});
+			}
+			else
+			{
+				console.log('Skipping create courses in users testdata, already present');
+			}
+			
 		});
 		if(callback) { callback(); }
 	});

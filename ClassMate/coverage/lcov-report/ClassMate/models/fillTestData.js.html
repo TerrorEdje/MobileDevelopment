@@ -18,16 +18,16 @@
     <h1>Code coverage report for <span class="entity">ClassMate\models\fillTestData.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">67.86% <small>(19 / 28)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">54.84% <small>(17 / 31)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">50% <small>(4 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">40% <small>(4 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">87.5% <small>(7 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">62.5% <small>(5 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">70.37% <small>(19 / 27)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">56.67% <small>(17 / 30)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -95,33 +95,41 @@
 58
 59
 60
-61</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+61
+62
+63
+64
+65
+66
+67
+68
+69</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,8 +150,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
@@ -157,14 +173,14 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var async = require('async');
 &nbsp;
-function saveCallback(err){
-	<span class="missing-if-branch" title="if path not taken" >I</span>if (err){
+<span class="fstat-no" title="function not covered" >function saveCallback(err){</span>
+<span class="cstat-no" title="statement not covered" >	if (err){</span>
 <span class="cstat-no" title="statement not covered" >		console.log('Fill testdata failed, reason: %s', err);</span>
 	}
 };
 &nbsp;
 function fillTestData(callback){
-	Course.find({}, function(err,data){
+	User.find({}, function(err,data){
 		<span class="missing-if-branch" title="if path not taken" >I</span>if(data.length == 0){
 <span class="cstat-no" title="statement not covered" >			console.log('Creating users testdata');</span>
 <span class="cstat-no" title="statement not covered" >			new User({ name:'Edwin Hattink', local:{ email: 'edwinhattink@me.com', password: '$2a$08$/enbBytoLjCtPamq.DzB9eNlrI2YZ4CcuN6LJwNkwJ17Ro17UbKrC'} }).save(saveCallback);</span>
@@ -187,9 +203,9 @@ function fillTestData(callback){
 						date: new Date(),
 						location: 'OB209',
 						description: 'Presentatie',
-						message: [{
+						messages: [{
 							user: doc._id,
-							message: 'Usually nobody comes, so who is coming today?',
+							message: 'Usually nobody comes, so who is coming today?'
 						}],
 						attendances: [{
 							user: doc._id
@@ -201,10 +217,18 @@ function fillTestData(callback){
 			console.log('Skipping create courses testdata, already present');
 		}		
 		User.findOne({ 'name' : 'Edwin Hattink' }, function (err, doc) {
-			Course.findOne({'name' : 'Mobile Development 1'}, function (err, doccourse) {
-				doc.courses.push(doccourse._id);
-				doc.save(saveCallback);
-			});
+			<span class="missing-if-branch" title="if path not taken" >I</span>if (doc.courses.length == 0) {
+<span class="cstat-no" title="statement not covered" >				console.log('Creating courses in users testdata');</span>
+<span class="cstat-no" title="statement not covered" >				Course.findOne({'name' : 'Mobile Development 1'}, <span class="fstat-no" title="function not covered" >function (err, doccourse) {</span></span>
+<span class="cstat-no" title="statement not covered" >					doc.courses.push(doccourse._id);</span>
+<span class="cstat-no" title="statement not covered" >					doc.save(saveCallback);</span>
+				});
+			}
+			else
+			{
+				console.log('Skipping create courses in users testdata, already present');
+			}
+			
 		});
 		<span class="missing-if-branch" title="if path not taken" >I</span>if(callback) { <span class="cstat-no" title="statement not covered" >callback(); </span>}
 	});
@@ -220,7 +244,7 @@ module.exports = function(mongoose){
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Mar 25 2015 11:42:24 GMT+0100 (W. Europe Standard Time)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Mar 29 2015 20:35:27 GMT+0200 (W. Europe Daylight Time)</div>
 </div>
 
 <script src="../../prettify.js"></script>
