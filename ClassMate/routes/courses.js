@@ -156,7 +156,7 @@ router.route('/:id/').put(function(req, res) {
 });
 
 /* POST course */
-router.route('/:id/').post(function(req, res) {
+router.route('/').post(function(req, res) {
   	var course = new Course(req.body);
   	course.save(function(err) {
   		if (err)
