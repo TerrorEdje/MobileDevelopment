@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Course = require('../../models/course');
+var qr = require('qr-image');
 
 /* GET course list */
 router.route('/').get(function(req, res) {
@@ -20,6 +21,12 @@ router.route('/:id').get(function(req, res) {
     }
     res.json(data);
   });
+});
+
+router.get('/:id/qr', function(req, res) {
+  var code = qr.image(req.params.id.toString(), { type: 'png' });
+    res.type('png');
+    code.pipe(res);
 });
 
 /* GET classes by course id */
