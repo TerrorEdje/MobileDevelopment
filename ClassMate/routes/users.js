@@ -24,4 +24,61 @@ router.route('/:id').get(function(req, res) {
   });
 });
 
+/* PUT user by id */ 
+router.route('/:id/').put(function(req, res) {
+  	User.findOne({ _id: req.params.id }, function(err, user) {
+	    if (err) {
+	        return res.send(err);
+	    } 
+	    user.save(req.body,function(err) {
+	      	if (err) {
+	        	return res.send(err);
+	      	}
+	      	res.status(200);
+	      	res.send({ message: 'User updated' });
+	    });
+  	});
+});
+
+/* POST user */
+router.route('/').post(function(req, res) {
+  	var user = new User(req.body);
+  	user.save(function(err) {
+  		if (err)
+  		{
+  			return res.send(err);
+  		}
+  		res.send({ message: 'User Added' });
+        res.status(201);
+  	});
+});
+
+/* POST course to user */
+router.route('/:id/courses/').post(function(req, res) {
+    User.findOne({ _id: req.params.id }, function(err, user) {
+      if (err) {
+          return res.send(err);
+      } 
+      user.courses.push(req.body);
+      user.save(req.body,function(err) {
+          if (err) {
+            return res.send(err);
+          }
+          res.status(200);
+          res.send({ message: 'Course added to User' });
+      });
+    });
+});
+
+/* DELETE course by id */
+router.route('/:id/').delete(function(req, res) {
+	User.remove(req.params.id, function(err) {
+		if (err) {
+			return res.send(err);
+		};
+		res.status(200);
+		res.send({ message: 'User deleted'});
+	});
+});
+
 module.exports = router;
