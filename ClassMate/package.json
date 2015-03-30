@@ -21,7 +21,8 @@
     "connect-flash": "*",
     "connect-roles": "*",
     "bcrypt-nodejs": "*",
-    "async":"*"
+    "async":"*",
+    "express-session":"*"
   },
   "devDependencies": {
     "chai": "^2.1.2",

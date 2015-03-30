@@ -4,9 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var flash = require('connect-flash');
+var session = require('express-session');
 
 //Passport
-//require('./config/passport')(passport); // pass passport for configuration
+var passport = require('passport');
+require('./config/passport')(passport); // pass passport for configuration
 
 //Database
 var mongoose = require('mongoose');
@@ -18,8 +21,9 @@ require('./models/course');
 require('./models/fillTestData')(mongoose,handleError);
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var courses = require('./routes/courses');
+var auth = require('./routes/auth/index');
+var users = require('./routes/api/users');
+var courses = require('./routes/api/courses');
 
 function handleError(req, res, statusCode, message){
     console.log();
@@ -46,12 +50,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// required for passport
+app.use(session({ secret: 'wiljewelwetenhe' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 app.use(function(req,res,next){
     req.mongoose = mongoose;
     next();
 });
 
 app.use('/', routes);
+app.use('/auth', auth);
 app.use('/api/users', users);
 app.use('/api/courses', courses);
 

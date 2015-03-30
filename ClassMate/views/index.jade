@@ -2,13 +2,10 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
-  p
-    a(href="/login" class="btn btn-default")
-      span(class="fa fa-user") Local Login
-  p 
-    a(href="/signup" class="btn btn-default")
-      span(class="fa fa-user") Local Signup
-  p 
+  if !user
+    p Welcome to #{title}
     a(href="/auth/google" class="btn btn-danger")
-      span(class="fa fa-google-plus") Google
+      span(class="fa fa-google-plus") Google Login
+  else
+    p welcome #{user.google.name}
+    a(href="/auth/logout") Logout
