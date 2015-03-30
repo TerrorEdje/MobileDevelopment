@@ -145,7 +145,7 @@ router.route('/:id/').put(function(req, res) {
 	    if (err) {
 	        return res.send(err);
 	    } 
-	    course.save(req.body,function(err) {
+	    course.update(req.body,function(err) {
 	      	if (err) {
 	        	return res.send(err);
 	      	}
