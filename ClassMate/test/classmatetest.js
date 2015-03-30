@@ -31,7 +31,7 @@ describe('Testing courses route', function(){
 			request.get('/api/courses/' + res.body.courses[0]._id).expect(200).end(function(error,result) {
 				if (error) { return done(error); }
 				expect(result.body).to.be.json;
-				(result.body).should.have.property('name','Mobile Development 1');
+				(result.body).should.have.property('_id');
 				done();
 			});
 		});		
@@ -44,6 +44,20 @@ describe('Testing courses route', function(){
 				expect(result.body).to.be.array;
 				(result.body).should.have.property('classes');
 				done();
+			});
+		});		
+	});
+	it('should return a class', function(done){
+		request.get('/api/courses/').expect(200).end(function(err,res) {
+			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
+				console.log('/api/courses/' + res.body.courses[0]._id + '/classes/' + result.body.classes[0]._id);
+				request.get('/api/courses/' + res.body.courses[0]._id + '/classes/' + result.body.classes[0]._id).expect(200).end(function(error,response) {
+					if (error) { return done(error); }
+					expect(response.body).to.be.json;
+					expect(response.body).to.be.array;
+					(response.body).should.have.property('_id');
+					done();
+				});
 			});
 		});		
 	});
@@ -86,9 +100,9 @@ describe('Testing courses route', function(){
 	});
 
 	it('should add a new course', function(done){
-		var themessage = 'creator=551833b0d4f1ebbc061e6400&name=Mobile+Development+1&description=Building+hybrid+apps';
+		var themessage = 'creator=5519556233e3c074147481ba&name=Mobile+Development+1&description=Building+hybrid+apps';
 		request.post('/api/courses/').type('application/x-www-form-urlencoded').send(themessage).expect(201).end(function(err, res){
-			//expect(res.status).to.be();
+			(res.body).should.have.property('message','Course Added');
 			done();
 		});		
 	});
