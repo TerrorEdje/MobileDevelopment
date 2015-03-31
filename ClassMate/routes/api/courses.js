@@ -10,6 +10,14 @@ router.route('/').get(function(req, res) {
   });
 });
 
+/* GET FULL course list */
+router.route('/full').get(function(req, res) {
+  Course.find({}, function(err, data){
+    res.json({ courses: data});
+    res.status(200);
+  });
+});
+
 /* GET course by id */
 router.route('/:id').get(function(req, res) {
   Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1}, function(err, data){
@@ -17,6 +25,15 @@ router.route('/:id').get(function(req, res) {
     res.status(200);
   });
 });
+
+/* GET FULL course list */
+router.route('/:id/full').get(function(req, res) {
+  Course.findOne({ _id: req.params.id }, function(err, data){
+    res.json(data);
+    res.status(200);
+  });
+});
+
 
 /* GET classes by course id */
 router.route('/:id/classes').get(function(req, res) {
@@ -95,8 +112,8 @@ router.route('/:id/classes/:cid/messages').post(function(req, res) {
 /* POST participant by course id */
 router.route('/:id/participants').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
-      data.participants.push(req.body);
-      data.save(function(err, savedCourse){
+      	data.participants.push(req.body);
+      	data.save(function(err, savedCourse){
         if(err){ return handleError(req, res, 500, err); }
         else {
             res.status(201);
@@ -160,10 +177,11 @@ router.route('/').post(function(req, res) {
 
 /* DELETE course by id */
 router.route('/:id/').delete(function(req, res) {
-  Course.remove(req.params.id, function(err) {
-    res.status(200);
-    res.send({ message: 'Course deleted'});
-  });
+    Course.findOne({ _id: req.params.id }, function(err, course) {	
+    	course.remove()
+    	res.status(200);
+    	res.send({ message: 'Course deleted'});
+  	});
 });
 
 module.exports = router;
