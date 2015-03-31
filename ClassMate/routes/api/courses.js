@@ -176,7 +176,7 @@ router.route('/').post(function(req, res) {
       {
         return res.send(err);
       }
-      res.send({ message: 'Course Added' });
+      res.send({ message: 'Course added' });
         res.status(201);
     })
 });
@@ -185,9 +185,7 @@ router.route('/').post(function(req, res) {
 /* DELETE course by id */
 router.route('/:id/').delete(function(req, res) {
   Course.remove(req.params.id, function(err) {
-    if (err) {
-      return res.send(err);
-    };
+    if (err) { return res.send(err); };
     res.status(200);
     res.send({ message: 'Course deleted'});
   });

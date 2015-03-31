@@ -1,10 +1,13 @@
 var ClassMateApp = require('express')();
-var courses = require('../routes/courses');
-var users = require('../routes/users');
+var courses = require('../routes/api/courses');
+var users = require('../routes/api/users');
 var Course = require('mongoose').model('Course');
 var User = require('mongoose').model('User');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/classmate');
+var bodyParser = require('body-parser');
+ClassMateApp.use(bodyParser.json());
+ClassMateApp.use(bodyParser.urlencoded({ extended: false }));
 ClassMateApp.use(function(req,res,next){
     req.mongoose = mongoose;
     next();
@@ -16,7 +19,13 @@ var request = require('supertest')(ClassMateApp);
 var expect = require('chai').expect;
 var should = require('chai').should();
 
-describe('Testing courses route', function(){
+describe('Testing courses GET requests', function(){
+	it('should return a 404 status', function(done) {
+		request.get('/courses').expect(404).end(function(err,res) {
+			done();
+		});
+	});
+
 	it('should return an course array in json', function(done){
 		request.get('/api/courses/').expect(200).end(function(err,res) {
 			if(err) { return done(err); }
@@ -50,11 +59,9 @@ describe('Testing courses route', function(){
 	it('should return a class', function(done){
 		request.get('/api/courses/').expect(200).end(function(err,res) {
 			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
-				console.log('/api/courses/' + res.body.courses[0]._id + '/classes/' + result.body.classes[0]._id);
 				request.get('/api/courses/' + res.body.courses[0]._id + '/classes/' + result.body.classes[0]._id).expect(200).end(function(error,response) {
 					if (error) { return done(error); }
 					expect(response.body).to.be.json;
-					expect(response.body).to.be.array;
 					(response.body).should.have.property('_id');
 					done();
 				});
@@ -98,17 +105,9 @@ describe('Testing courses route', function(){
 			});
 		});		
 	});
-
-	it('should add a new course', function(done){
-		var themessage = 'creator=5519556233e3c074147481ba&name=Mobile+Development+1&description=Building+hybrid+apps';
-		request.post('/api/courses/').type('application/x-www-form-urlencoded').send(themessage).expect(201).end(function(err, res){
-			(res.body).should.have.property('message','Course Added');
-			done();
-		});		
-	});
 });
 
-describe('Testing users route', function(){
+describe('Testing users GET requests', function(){
 	it('should return users', function(done){
 		request.get('/api/users/').expect(200).end(function(err,res) {
 			if (err) { return done(err); }
@@ -117,5 +116,72 @@ describe('Testing users route', function(){
 			done();
 		});
 	});
+
+	it('should return a user', function(done){
+		request.get('/api/users/').expect(200).end(function(err,res) {
+			request.get('/api/users/' + res.body.users[0]._id).expect(200).end(function(err,res) {
+				if (err) { return done(err); }
+				expect(res.body).to.be.json;
+				(res.body).should.have.property('_id');
+				done();
+			});
+		});
+	});
 });
 
+describe('Testing POST, PUT and DELETE requests', function(){
+	var course;
+	var classe;
+	var user;
+	it('should fill user var', function(done){
+		request.get('/api/users/').expect(200).end(function(err,res) {
+			user = res.body.users[0];
+			done();
+		});
+	});
+	it('should fill course var', function(done){
+		request.get('/api/courses/').expect(200).end(function(err,res) {
+			course = res.body.courses[0];
+			done();
+		});
+	});
+	it('should fill classe var', function(done){
+		request.get('/api/courses/' + course._id + '/classes/').expect(200).end(function(error,result) {
+			classe = result.body.classes[0];
+			done();
+		});
+	});
+
+	it('should add a new course', function(done){
+		request.post('/api/courses/').send('creator=' + user._id).send('name=MobileDevelopment1').send('description=Buildinghybridapps').expect(201).end(function(err, res){
+			(res.body).should.have.property('message','Course added');
+			done();			
+		});
+	});
+
+	it('should update a course', function(done){
+		course.name = 'mobile development 500';
+		request.put('/api/courses/' + course._id).send(course).expect(201).end(function(err, res){
+			(res.body).should.have.property('message','Course updated');
+			done();			
+		});
+	});
+
+	/*it('should delete a course', function(done) {
+		request.post('/api/courses/').send('creator=' + user._id).send('name=MobileDevelopment1').send('description=Buildinghybridapps').expect(201).end(function(err, res){
+			request.get('/api/courses/').expect(200).end(function(err,res) {
+				request.delete('/api/courses/' + res.body.courses[res.body.courses.length-1]).expect(200).end(function(err,res) {
+					(res.body).should.have.property('message','Course deleted');
+					done();	
+				});			
+			});		
+		});
+	});*/
+
+	it('should add a new message', function(done){
+		request.post('/api/courses/' + course._id + '/classes/' + classe._id + '/messages').send('user='+ user._id).send('message','This is a new test message').expect(201).end(function(err, res){
+			(res.body).should.have.property('message','Message added');
+			done();			
+		});
+	});
+});
