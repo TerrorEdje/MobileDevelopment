@@ -3,9 +3,16 @@ var router = express.Router();
 var passport = require('passport');
 
 // GET home page.
-router.get('/', function(req, res, next) {
-	console.log(req.user);
-  res.render('index', { title: 'Express', message: "req.flash('signupMessage')", user: req.user });
+router.get('/', isLoggedIn, function(req, res, next) {
+  res.render('index', { page: 'overview', title: 'Overview', user: req.user });
+});
+
+router.get('/login', function(req, res) {
+  res.render('login');
+});
+
+router.get('/courses', isLoggedIn, function(req, res, next) {
+  res.render('courses', { page: 'courses', title: 'Courses', user: req.user });
 });
 
 module.exports = router;
@@ -17,5 +24,5 @@ function isLoggedIn(req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/login');
 }

@@ -51,7 +51,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // required for passport
-app.use(session({ secret: 'wiljewelwetenhe' })); // session secret
+app.use(session({ secret: 'wiljewelwetenhe', resave: false, saveUninitialized: true })); // session secret
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
