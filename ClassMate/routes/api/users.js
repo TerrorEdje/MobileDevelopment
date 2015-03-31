@@ -4,39 +4,29 @@ var User = require('../../models/user');
 
 /* GET user list */
 router.route('/').get(function(req, res) {
-  User.find({}, function(err, data){
-    if (err) {
-      return res.send(err);
-    }
-    res.json({ users: data});
-    res.status(200);
-  });
+  	User.find({}, function(err, data){
+    	res.json({ users: data});
+    	res.status(200);
+  	});
 });
 
 /* GET user by id */
 router.route('/:id').get(function(req, res) {
 	User.findOne({ _id: req.params.id }, function(err, data){
-    if (err) {
-      	return res.send(err);
-    }
     res.json(data);
     res.status(200);
   });
 });
 
-/* PUT user by id */ 
+/* PUT user by id */
 router.route('/:id/').put(function(req, res) {
+  	console.log(req.body);
   	User.findOne({ _id: req.params.id }, function(err, user) {
-	    if (err) {
-	        return res.send(err);
-	    } 
-	    user.save(req.body,function(err) {
-	      	if (err) {
-	        	return res.send(err);
-	      	}
-	      	res.status(200);
-	      	res.send({ message: 'User updated' });
-	    });
+  		console.log(user);
+    	user.save(req.body,function(err) {
+		    res.status(200);
+		    res.send({ message: 'User updated' });
+		});
   	});
 });
 
@@ -44,11 +34,7 @@ router.route('/:id/').put(function(req, res) {
 router.route('/').post(function(req, res) {
   	var user = new User(req.body);
   	user.save(function(err) {
-  		if (err)
-  		{
-  			return res.send(err);
-  		}
-  		res.send({ message: 'User Added' });
+  		res.send({ message: 'User added' });
         res.status(201);
   	});
 });
@@ -56,9 +42,6 @@ router.route('/').post(function(req, res) {
 /* POST course to user */
 router.route('/:id/courses/').post(function(req, res) {
     User.findOne({ _id: req.params.id }, function(err, user) {
-      if (err) {
-          return res.send(err);
-      } 
       user.courses.push(req.body);
       user.save(req.body,function(err) {
           if (err) {
@@ -70,12 +53,9 @@ router.route('/:id/courses/').post(function(req, res) {
     });
 });
 
-/* DELETE course by id */
+/* DELETE user by id */
 router.route('/:id/').delete(function(req, res) {
 	User.remove(req.params.id, function(err) {
-		if (err) {
-			return res.send(err);
-		};
 		res.status(200);
 		res.send({ message: 'User deleted'});
 	});

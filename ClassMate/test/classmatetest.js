@@ -181,10 +181,25 @@ describe('Testing POST, PUT and DELETE requests', function(){
 		});
 	});
 
+	it('should add a new user', function(done){
+		request.post('/api/users/').send('name=Edwin Hattink').expect(201).end(function(err, res){
+			(res.body).should.have.property('message','User added');
+			done();			
+		});
+	});
+
 	it('should update a course', function(done){
 		course.name = 'mobile development 500';
-		request.put('/api/courses/' + course._id).send(course).expect(201).end(function(err, res){
+		request.put('/api/courses/' + course._id).send(course).expect(200).end(function(err, res){
 			(res.body).should.have.property('message','Course updated');
+			done();			
+		});
+	});
+
+	it('should update a user', function(done){
+		user.name = 'This has become a test user.';
+		request.put('/api/user/' + user._id).send(user).expect(200).end(function(err, res){
+			(res.body).should.have.property('message','User updated');
 			done();			
 		});
 	});
@@ -198,6 +213,21 @@ describe('Testing POST, PUT and DELETE requests', function(){
       			}
 				request.delete('/api/courses/' + lookup._id).expect(200).end(function(err,res) {
 					(res.body).should.have.property('message','Course deleted');
+					done();	
+				});
+			});		
+		});
+	});
+
+	it('should delete a user', function(done) {
+		request.post('/api/users/').send('name=Edwin Hattink').expect(201).end(function(err, res){
+			request.get('/api/users/').expect(200).end(function(err,res) {
+				var lookup;
+      			for (var i = 0, len = res.body.users.length; i < len; i++) {
+      				if (res.body.users[i].name == 'Edwin Hattink') { lookup = res.body.users[i]; }
+      			}
+				request.delete('/api/users/' + lookup._id).expect(200).end(function(err,res) {
+					(res.body).should.have.property('message','User deleted');
 					done();	
 				});			
 			});		
