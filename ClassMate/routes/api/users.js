@@ -55,10 +55,11 @@ router.route('/:id/courses/').post(function(req, res) {
 
 /* DELETE user by id */
 router.route('/:id/').delete(function(req, res) {
-	User.remove(req.params.id, function(err) {
-		res.status(200);
-		res.send({ message: 'User deleted'});
-	});
+	User.findOne({ _id: req.params.id }, function(err, user) {	
+    	user.remove()
+    	res.status(200);
+    	res.send({ message: 'Course deleted'});
+  	});
 });
 
 module.exports = router;

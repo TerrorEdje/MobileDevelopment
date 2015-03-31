@@ -29,4 +29,10 @@ var courseSchema = new Schema({
     }]
 });
 
-module.exports = mongoose.model('Course', courseSchema);
+var Course = mongoose.model('Course', courseSchema);
+
+/*Course.schema.path('classes/date').validate(function (value) {
+  return /blue|green|white|red|orange|periwinkle/i.test(value);
+}, 'Invalid color');*/
+
+module.exports = Course;
