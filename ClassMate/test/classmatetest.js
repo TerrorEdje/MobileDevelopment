@@ -139,6 +139,7 @@ describe('Testing POST, PUT and DELETE requests', function(){
 			done();
 		});
 	});
+
 	it('should fill course var', function(done){
 		request.get('/api/courses/').expect(200).end(function(err,res) {
 			course = res.body.courses[0];
@@ -149,6 +150,27 @@ describe('Testing POST, PUT and DELETE requests', function(){
 		request.get('/api/courses/' + course._id + '/classes/').expect(200).end(function(error,result) {
 			classe = result.body.classes[0];
 			done();
+		});
+	});
+
+	it('should add a new message', function(done){
+		request.post('/api/courses/' + course._id + '/classes/' + classe._id + '/messages').send('user='+ user._id).send('message','This is a new test message').expect(201).end(function(err, res){
+			(res.body).should.have.property('message','Message added');
+			done();			
+		});
+	});
+
+	it('should add a new attendance', function(done){
+		request.post('/api/courses/' + course._id + '/classes/' + classe._id + '/attendances').send('user='+ user._id).expect(201).end(function(err, res){
+			(res.body).should.have.property('message','Attendance added');
+			done();			
+		});
+	});
+
+	it('should add a new participant', function(done){
+		request.post('/api/courses/' + course._id + '/participants').send('user='+ user._id).expect(201).end(function(err, res){
+			(res.body).should.have.property('message','Participant added');
+			done();			
 		});
 	});
 
@@ -167,21 +189,18 @@ describe('Testing POST, PUT and DELETE requests', function(){
 		});
 	});
 
-	/*it('should delete a course', function(done) {
+	it('should delete a course', function(done) {
 		request.post('/api/courses/').send('creator=' + user._id).send('name=MobileDevelopment1').send('description=Buildinghybridapps').expect(201).end(function(err, res){
 			request.get('/api/courses/').expect(200).end(function(err,res) {
-				request.delete('/api/courses/' + res.body.courses[res.body.courses.length-1]).expect(200).end(function(err,res) {
+				var lookup;
+      			for (var i = 0, len = res.body.courses.length; i < len; i++) {
+      				if (res.body.courses[i].name == 'MobileDevelopment1') { lookup = res.body.courses[i]; }
+      			}
+				request.delete('/api/courses/' + lookup._id).expect(200).end(function(err,res) {
 					(res.body).should.have.property('message','Course deleted');
 					done();	
 				});			
 			});		
-		});
-	});*/
-
-	it('should add a new message', function(done){
-		request.post('/api/courses/' + course._id + '/classes/' + classe._id + '/messages').send('user='+ user._id).send('message','This is a new test message').expect(201).end(function(err, res){
-			(res.body).should.have.property('message','Message added');
-			done();			
 		});
 	});
 });
