@@ -6,8 +6,16 @@ var qr = require('qr-image');
 
 /* GET course list */
 router.route('/').get(function(req, res) {
-  Course.find({}, {creator:1, name:1, description:1}, function(err, data){
+  Course.find({}, {creator:1, name:1, description:1, subId:1}, function(err, data){
     res.json({ courses: data});
+    res.status(200);
+  });
+});
+
+/* GET course by id */
+router.route('/subid/:subId').get(function(req, res) {
+  Course.findOne({ subId: req.params.subId },{creator:1, name:1, description:1, subId:1}, function(err, data){
+    res.json(data);
     res.status(200);
   });
 });
@@ -38,7 +46,7 @@ router.route('/full/:page').get(function(req, res) {
 
 /* GET course by id */
 router.route('/:id').get(function(req, res) {
-  Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1}, function(err, data){
+  Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1, subId:1}, function(err, data){
     res.json(data);
     res.status(200);
   });
