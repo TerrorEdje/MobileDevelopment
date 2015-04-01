@@ -4,7 +4,7 @@ var shortid = require('shortid');
 
 var courseSchema = new Schema({
     creator: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
-    subId: { type: String, unique: true, default: shortid.generate() },
+    subId: { type: String, unique: true, default: shortid.generate },
     name: { type: String, required: true },
     description: { type: String },
     participants: [{ user: {type: Schema.Types.ObjectId, ref: 'User' }}],
