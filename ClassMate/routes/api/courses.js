@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var Course = require('../../models/course');
+var qr = require('qr-image');
+
 
 /* GET course list */
 router.route('/').get(function(req, res) {
@@ -10,9 +12,24 @@ router.route('/').get(function(req, res) {
   });
 });
 
+/* GET qr image by course id */
+router.get('/:id/qr', function(req, res) {
+  var code = qr.image(req.params.subId.toString(), { type: 'png' });
+    res.type('png');
+    code.pipe(res);
+});
+
 /* GET FULL course list */
 router.route('/full').get(function(req, res) {
   Course.find({}, function(err, data){
+    res.json({ courses: data});
+    res.status(200);
+  });
+});
+
+/* GET FULL course list */
+router.route('/full/pages/:skip/:limit').get(function(req, res) {
+  Course.find({},{},{skip: req.params.skip, limit: req.params.limit}, function(err, data){
     res.json({ courses: data});
     res.status(200);
   });
@@ -114,7 +131,7 @@ router.route('/:id/participants').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
       	data.participants.push(req.body);
       	data.save(function(err, savedCourse){
-        if(err){ return handleError(req, res, 500, err); }
+        if(err){ return res.send(err); }
         else {
             res.status(201);
             res.send({ message: 'Participant added' });
@@ -128,7 +145,7 @@ router.route('/:id/classes').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
       data.classes.push(req.body);
       data.save(function(err, savedCourse){
-        if(err){ return handleError(req, res, 500, err); }
+        if(err){ return res.send(err); }
         else {
             res.status(201);
             res.send({ message: 'Class added' });
@@ -145,8 +162,8 @@ router.route('/:id/classes/:cid/attendances').post(function(req, res) {
           lookup[data.classes[i]._id] = data.classes[i];
       }
       lookup[req.params.cid].attendances.push(req.body);
-      data.save(function(err, savedCourse){
-        if(err){ return handleError(req, res, 500, err); }
+      data.save(function(err){
+        if(err){ return res.send(err); }
         else {
             res.status(201);
             res.send({ message: 'Attendance added' });

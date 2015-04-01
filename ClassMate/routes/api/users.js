@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
+var qr = require('qr-image');
 var Course = require('../../models/course');
 
 /* GET user list */
@@ -9,6 +10,13 @@ router.route('/').get(function(req, res) {
     	res.json({ users: data});
     	res.status(200);
   	});
+});
+
+/* GET qr image by user id */
+router.get('/:id/qr', function(req, res) {
+  var code = qr.image(req.params.subId.toString(), { type: 'png' });
+    res.type('png');
+    code.pipe(res);
 });
 
 /* GET user by id */
