@@ -56,10 +56,6 @@ router.route('/:id/full').get(function(req, res) {
 /* GET classes by course id */
 router.route('/:id/classes').get(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
-        for (var i = 0, len = data.classes.length; i < len; i++) {
-            data.classes[i].messages = null;
-            data.classes[i].attendances = null;
-        }
       res.json({ classes: data.classes });
       res.status(200);
     });
@@ -202,12 +198,19 @@ router.route('/:id/').delete(function(req, res) {
   	});
 });
 
-/* DELETE class by id */
-router.route('/:id/').delete(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, course) {  
-      course.remove()
-      res.status(200);
-      res.send({ message: 'Course deleted'});
+/* DELETE class by course and class id */
+router.route('/:id/classes/:cid').delete(function(req, res) {
+    Course.findOne({ _id: req.params.id }, function(err, data){
+      for (var i = 0, len = data.classes.length; i < len; i++) {
+        if (data.classes[i]._id == req.params.cid) {
+          data.classes.splice(i,1);
+        }
+      }
+      data.save(function(err) {
+        if (err) { return res.send(err); }
+        res.send({ message: 'Class deleted'});
+        res.status(200);
+      });      
     });
 });
 
