@@ -9,7 +9,7 @@ var courseSchema = new Schema({
     description: { type: String },
     participants: [{ user: {type: Schema.Types.ObjectId, ref: 'User' }}],
     classes: [{
-    	date: { type: Date, required: true },
+    	date: { type: Date },
     	location: { type: String },
     	description: { type: String },
     	messages: [{
@@ -31,9 +31,9 @@ var courseSchema = new Schema({
     }]
 });
 
-courseSchema.path('name').validate(function(val){
-    return val >=0 && val.length <= 30;
-}, 'Name cannot be longer than 30 characters');
+courseSchema.path('name').validate(function(value){
+    return value.length >= 3 && value.length <= 30;
+}, 'Name should be longer than 3 and shorter than 30');
 
 var Course = mongoose.model('Course', courseSchema);
 

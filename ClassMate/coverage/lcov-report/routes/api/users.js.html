@@ -14,20 +14,20 @@
     </style>
 </head>
 <body>
-<div class="header medium">
+<div class="header low">
     <h1>Code coverage report for <span class="entity">routes\api\users.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">51.92% <small>(27 / 52)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">44.44% <small>(28 / 63)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">0% <small>(0 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 10)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">47.06% <small>(8 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">42.11% <small>(8 / 19)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">51.92% <small>(27 / 52)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">44.44% <small>(28 / 63)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -122,7 +122,24 @@
 85
 86
 87
-88</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -156,6 +173,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -179,6 +204,22 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -187,13 +228,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,6 +272,14 @@ router.route('/:id').get(function(req, res) {
   });
 });
 &nbsp;
+/* GET user by subid */
+router.route('/subid/:subid').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span>
+<span class="cstat-no" title="statement not covered" >  User.findOne({ subId: req.params.subid }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >    res.json(data);</span>
+<span class="cstat-no" title="statement not covered" >    res.status(200);</span>
+  });
+});
+&nbsp;
 /* PUT user by id */
 router.route('/:id/').put(<span class="fstat-no" title="function not covered" >function(req, res) {</span>
 <span class="cstat-no" title="statement not covered" >  	console.log(req.body);</span>
@@ -261,29 +303,38 @@ router.route('/').post(function(req, res) {
 &nbsp;
 /* POST course to user */
 router.route('/:id/courses/').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span>
-<span class="cstat-no" title="statement not covered" >  console.log(req.params.id);</span>
-<span class="cstat-no" title="statement not covered" >  console.log(req.body);</span>
+<span class="cstat-no" title="statement not covered" >  var courseId;</span>
+<span class="cstat-no" title="statement not covered" >  Course.findOne({ subId: req.body.id}, <span class="fstat-no" title="function not covered" >function(err,course) {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log(course);</span>
+<span class="cstat-no" title="statement not covered" >    if (course == null) {</span>
+<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
+<span class="cstat-no" title="statement not covered" >      return res.send({message: "No Course found with that key"});</span>
+    }
+<span class="cstat-no" title="statement not covered" >    if (err) {</span>
+<span class="cstat-no" title="statement not covered" >      return res.send(err);</span>
+    }
+<span class="cstat-no" title="statement not covered" >    courseId = course._id;</span>
+<span class="cstat-no" title="statement not covered" >    course.participants.push(req.params.id);</span>
+<span class="cstat-no" title="statement not covered" >    course.save(<span class="fstat-no" title="function not covered" >function(err) {</span></span>
+<span class="cstat-no" title="statement not covered" >      if (err) {</span>
+<span class="cstat-no" title="statement not covered" >        return res.send(err);</span>
+      }
+<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
+    });
 <span class="cstat-no" title="statement not covered" >    User.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, user) {</span></span>
 <span class="cstat-no" title="statement not covered" >      if (err) {</span>
 <span class="cstat-no" title="statement not covered" >        return res.send(err);</span>
       }
-<span class="cstat-no" title="statement not covered" >      user.courses.push(req.body._id);</span>
+<span class="cstat-no" title="statement not covered" >      user.courses.push(courseId);</span>
 <span class="cstat-no" title="statement not covered" >      user.save(<span class="fstat-no" title="function not covered" >function(err) {</span></span>
-<span class="cstat-no" title="statement not covered" >          if (err) {</span>
-<span class="cstat-no" title="statement not covered" >            return res.send(err);</span>
-          }
-<span class="cstat-no" title="statement not covered" >          Course.findOne({ _id: req.body._id}, <span class="fstat-no" title="function not covered" >function(err,course) {</span></span>
-<span class="cstat-no" title="statement not covered" >            course.participants.push(req.params.id);</span>
-<span class="cstat-no" title="statement not covered" >            course.save(<span class="fstat-no" title="function not covered" >function(err) {</span></span>
-<span class="cstat-no" title="statement not covered" >              if (err) {</span>
-<span class="cstat-no" title="statement not covered" >                return res.send(err);</span>
-              }
-<span class="cstat-no" title="statement not covered" >              res.status(200);</span>
-<span class="cstat-no" title="statement not covered" >              res.send({ message: 'Course added to User and User added to Course.' });</span>
-            });
-          });
+<span class="cstat-no" title="statement not covered" >        if (err) {</span>
+<span class="cstat-no" title="statement not covered" >          return res.send(err);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        res.status(200);</span>
+<span class="cstat-no" title="statement not covered" >        res.send({ message: 'User subscribed'});</span>
       });
     });
+  });
 });
 &nbsp;
 /* DELETE user by id */
@@ -301,7 +352,7 @@ module.exports = router;
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 15:28:06 GMT+0200 (W. Europe Daylight Time)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 16:31:48 GMT+0200 (W. Europe Daylight Time)</div>
 </div>
 
 <script src="../../prettify.js"></script>

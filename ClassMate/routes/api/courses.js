@@ -7,6 +7,7 @@ var qr = require('qr-image');
 /* GET course list */
 router.route('/').get(function(req, res) {
   Course.find({}, {creator:1, name:1, description:1, subId:1}, function(err, data){
+    if (err) { return res.send(err) };
     res.json({ courses: data});
     res.status(200);
   });
@@ -15,6 +16,7 @@ router.route('/').get(function(req, res) {
 /* GET course by subid */
 router.route('/subid/:subId').get(function(req, res) {
   Course.findOne({ subId: req.params.subId },{creator:1, name:1, description:1, subId:1}, function(err, data){
+    if (err) { return res.send(err) };
     res.json(data);
     res.status(200);
   });
@@ -39,6 +41,7 @@ router.route('/full').get(function(req, res) {
 router.route('/full/:page').get(function(req, res) {
   var skipp = 10 * req.params.page;
   Course.find({},{},{ skip: skipp, limit: 10}, function(err, data){
+    if (err) { return res.send(err) };
     res.json({ courses: data});
     res.status(200);
   });
@@ -47,6 +50,7 @@ router.route('/full/:page').get(function(req, res) {
 /* GET course by id */
 router.route('/:id').get(function(req, res) {
   Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1, subId:1}, function(err, data){
+    if (err) { return res.send(err) };
     res.json(data);
     res.status(200);
   });
@@ -55,6 +59,7 @@ router.route('/:id').get(function(req, res) {
 /* GET FULL course list */
 router.route('/:id/full').get(function(req, res) {
   Course.findOne({ _id: req.params.id }, function(err, data){
+    if (err) { return res.send(err) };
     res.json(data);
     res.status(200);
   });
@@ -64,6 +69,7 @@ router.route('/:id/full').get(function(req, res) {
 /* GET classes by course id */
 router.route('/:id/classes').get(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       res.json({ classes: data.classes });
       res.status(200);
     });
@@ -72,6 +78,7 @@ router.route('/:id/classes').get(function(req, res) {
 /* GET class by course and class id */
 router.route('/:id/classes/:cid').get(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       var lookup = {};
       for (var i = 0, len = data.classes.length; i < len; i++) {
           lookup = data.classes[i];
@@ -84,6 +91,7 @@ router.route('/:id/classes/:cid').get(function(req, res) {
 /* GET participants by course id */
 router.route('/:id/participants').get(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       res.json({ participants: data.participants });
       res.status(200);
     });
@@ -92,6 +100,7 @@ router.route('/:id/participants').get(function(req, res) {
 /* GET messages by course and class id */
 router.route('/:id/classes/:cid/messages').get(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       var lookup = {};
       for (var i = 0, len = data.classes.length; i < len; i++) {
           lookup[data.classes[i]._id] = data.classes[i];
@@ -104,6 +113,7 @@ router.route('/:id/classes/:cid/messages').get(function(req, res) {
 /* GET attendances by course and class id */
 router.route('/:id/classes/:cid/attendances').get(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       var lookup = {};
       for (var i = 0, len = data.classes.length; i < len; i++) {
           lookup[data.classes[i]._id] = data.classes[i];
@@ -116,6 +126,7 @@ router.route('/:id/classes/:cid/attendances').get(function(req, res) {
 /* POST message by course and class id */
 router.route('/:id/classes/:cid/messages').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       var lookup = {};
       for (var i = 0, len = data.classes.length; i < len; i++) {
           lookup[data.classes[i]._id] = data.classes[i];
@@ -134,6 +145,7 @@ router.route('/:id/classes/:cid/messages').post(function(req, res) {
 /* POST participant by course id */
 router.route('/:id/participants').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       	data.participants.push(req.body);
       	data.save(function(err, savedCourse){
         if(err){ return res.send(err); }
@@ -148,6 +160,7 @@ router.route('/:id/participants').post(function(req, res) {
 /* POST class by course id */
 router.route('/:id/classes').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       data.classes.push(req.body);
       data.save(function(err, savedCourse){
         if(err){ return res.send(err); }
@@ -162,6 +175,7 @@ router.route('/:id/classes').post(function(req, res) {
 /* POST attendance by course and class id */
 router.route('/:id/classes/:cid/attendances').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
+      if (err) { return res.send(err) };
       var lookup = {};
       for (var i = 0, len = data.classes.length; i < len; i++) {
           lookup[data.classes[i]._id] = data.classes[i];
@@ -180,7 +194,9 @@ router.route('/:id/classes/:cid/attendances').post(function(req, res) {
 /* PUT course by id */
 router.route('/:id/').put(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, course) {
+      if (err) { return res.send(err) };
       course.update(req.body,function(err) {
+        if (err) { return res.send(err) };
           res.status(200);
           res.send({ message: 'Course updated' });
       });
@@ -191,6 +207,7 @@ router.route('/:id/').put(function(req, res) {
 router.route('/').post(function(req, res) {
     var course = new Course(req.body);
     course.save(function(err) {
+      if (err) { return res.send(err) };
       res.send({ message: 'Course added' });
         res.status(201);
     })
