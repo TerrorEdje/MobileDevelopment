@@ -32,7 +32,7 @@ var courseSchema = new Schema({
 });
 
 courseSchema.path('name').validate(function(val){
-    return val && val.length <= 30;
+    return val >=0 && val.length <= 30;
 }, 'Name cannot be longer than 30 characters');
 
 var Course = mongoose.model('Course', courseSchema);
