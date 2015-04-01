@@ -28,8 +28,9 @@ router.route('/full').get(function(req, res) {
 });
 
 /* GET FULL course list */
-router.route('/full/pages/:skip/:limit').get(function(req, res) {
-  Course.find({},{},{skip: req.params.skip, limit: req.params.limit}, function(err, data){
+router.route('/full/:page').get(function(req, res) {
+  var skipp = 10 * req.params.page;
+  Course.find({},{},{ skip: skipp, limit: 10}, function(err, data){
     res.json({ courses: data});
     res.status(200);
   });
@@ -199,6 +200,15 @@ router.route('/:id/').delete(function(req, res) {
     	res.status(200);
     	res.send({ message: 'Course deleted'});
   	});
+});
+
+/* DELETE class by id */
+router.route('/:id/').delete(function(req, res) {
+    Course.findOne({ _id: req.params.id }, function(err, course) {  
+      course.remove()
+      res.status(200);
+      res.send({ message: 'Course deleted'});
+    });
 });
 
 module.exports = router;
