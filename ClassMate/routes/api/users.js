@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
+var Course = require('../../models/course');
 
 /* GET user list */
 router.route('/').get(function(req, res) {
@@ -41,14 +42,27 @@ router.route('/').post(function(req, res) {
 
 /* POST course to user */
 router.route('/:id/courses/').post(function(req, res) {
+  console.log(req.params.id);
+  console.log(req.body);
     User.findOne({ _id: req.params.id }, function(err, user) {
-      user.courses.push(req.body);
-      user.save(req.body,function(err) {
+      if (err) {
+        return res.send(err);
+      }
+      user.courses.push(req.body._id);
+      user.save(function(err) {
           if (err) {
             return res.send(err);
           }
-          res.status(200);
-          res.send({ message: 'Course added to User' });
+          Course.findOne({ _id: req.body._id}, function(err,course) {
+            course.participants.push(req.params.id);
+            course.save(function(err) {
+              if (err) {
+                return res.send(err);
+              }
+              res.status(200);
+              res.send({ message: 'Course added to User and User added to Course.' });
+            });
+          });
       });
     });
 });
@@ -58,7 +72,7 @@ router.route('/:id/').delete(function(req, res) {
 	User.findOne({ _id: req.params.id }, function(err, user) {	
     	user.remove()
     	res.status(200);
-    	res.send({ message: 'Course deleted'});
+    	res.send({ message: 'User deleted'});
   	});
 });
 

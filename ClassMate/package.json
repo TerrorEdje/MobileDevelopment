@@ -23,7 +23,8 @@
     "bcrypt-nodejs": "*",
     "async":"*",
     "express-session":"*",
-    "qr-image":"*"
+    "qr-image":"*",
+	"shortid":"*"
   },
   "devDependencies": {
     "chai": "^2.1.2",

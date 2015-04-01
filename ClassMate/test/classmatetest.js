@@ -45,6 +45,27 @@ describe('Testing courses GET requests', function(){
 			});
 		});		
 	});
+
+	it('should return a full course array in json', function(done){
+		request.get('/api/courses/full').expect(200).end(function(err,res) {
+			if(err) { return done(err); }
+			expect(res.body).to.be.json;
+			expect(res.body).to.be.array;
+			(res.body).should.have.property('courses');
+	    	done();
+		});
+	});
+	it('should return a full course', function(done){
+		request.get('/api/courses/').expect(200).end(function(err,res) {
+			request.get('/api/courses/' + res.body.courses[0]._id + '/full').expect(200).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('_id');
+				done();
+			});
+		});		
+	});
+
 	it('should return an array of classes', function(done){
 		request.get('/api/courses/').expect(200).end(function(err,res) {
 			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
@@ -196,14 +217,6 @@ describe('Testing POST, PUT and DELETE requests', function(){
 		});
 	});
 
-	it('should update a user', function(done){
-		user.name = 'This has become a test user.';
-		request.put('/api/user/' + user._id).send(user).expect(200).end(function(err, res){
-			(res.body).should.have.property('message','User updated');
-			done();			
-		});
-	});
-
 	it('should delete a course', function(done) {
 		request.post('/api/courses/').send('creator=' + user._id).send('name=MobileDevelopment1').send('description=Buildinghybridapps').expect(201).end(function(err, res){
 			request.get('/api/courses/').expect(200).end(function(err,res) {
@@ -220,7 +233,7 @@ describe('Testing POST, PUT and DELETE requests', function(){
 	});
 
 	it('should delete a user', function(done) {
-		request.post('/api/users/').send('name=Edwin Hattink').expect(201).end(function(err, res){
+		request.post('/api/users/').send('name=Edwin Hattink').expect(200).end(function(err, res){
 			request.get('/api/users/').expect(200).end(function(err,res) {
 				var lookup;
       			for (var i = 0, len = res.body.users.length; i < len; i++) {

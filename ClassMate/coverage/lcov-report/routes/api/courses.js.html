@@ -18,16 +18,16 @@
     <h1>Code coverage report for <span class="entity">routes\api\courses.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">96.59% <small>(85 / 88)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">90.48% <small>(95 / 105)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">50% <small>(3 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">37.5% <small>(3 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">100% <small>(30 / 30)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">91.89% <small>(34 / 37)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">100% <small>(85 / 85)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">94.06% <small>(95 / 101)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -190,15 +190,47 @@
 153
 154
 155
-156</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">9</span>
-<span class="cline-any cline-yes">9</span>
-<span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,6 +239,23 @@
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -293,6 +342,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -337,6 +400,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -357,6 +421,14 @@ router.route('/').get(function(req, res) {
   });
 });
 &nbsp;
+/* GET FULL course list */
+router.route('/full').get(function(req, res) {
+  Course.find({}, function(err, data){
+    res.json({ courses: data});
+    res.status(200);
+  });
+});
+&nbsp;
 /* GET course by id */
 router.route('/:id').get(function(req, res) {
   Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1}, function(err, data){
@@ -364,6 +436,15 @@ router.route('/:id').get(function(req, res) {
     res.status(200);
   });
 });
+&nbsp;
+/* GET FULL course list */
+router.route('/:id/full').get(function(req, res) {
+  Course.findOne({ _id: req.params.id }, function(err, data){
+    res.json(data);
+    res.status(200);
+  });
+});
+&nbsp;
 &nbsp;
 /* GET classes by course id */
 router.route('/:id/classes').get(function(req, res) {
@@ -442,12 +523,26 @@ router.route('/:id/classes/:cid/messages').post(function(req, res) {
 /* POST participant by course id */
 router.route('/:id/participants').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
-      data.participants.push(req.body);
-      data.save(function(err, savedCourse){
+      	data.participants.push(req.body);
+      	data.save(function(err, savedCourse){
         <span class="missing-if-branch" title="if path not taken" >I</span>if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}
         else {
             res.status(201);
             res.send({ message: 'Participant added' });
+        }
+      });
+    });
+});
+&nbsp;
+/* POST class by course id */
+router.route('/:id/classes').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      data.classes.push(req.body);</span>
+<span class="cstat-no" title="statement not covered" >      data.save(<span class="fstat-no" title="function not covered" >function(err, savedCourse){</span></span>
+<span class="cstat-no" title="statement not covered" >        if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}</span>
+        else {
+<span class="cstat-no" title="statement not covered" >            res.status(201);</span>
+<span class="cstat-no" title="statement not covered" >            res.send({ message: 'Class added' });</span>
         }
       });
     });
@@ -493,10 +588,11 @@ router.route('/').post(function(req, res) {
 &nbsp;
 /* DELETE course by id */
 router.route('/:id/').delete(function(req, res) {
-  Course.remove(req.params.id, function(err) {
-    res.status(200);
-    res.send({ message: 'Course deleted'});
-  });
+    Course.findOne({ _id: req.params.id }, function(err, course) {	
+    	course.remove()
+    	res.status(200);
+    	res.send({ message: 'Course deleted'});
+  	});
 });
 &nbsp;
 module.exports = router;
@@ -505,7 +601,7 @@ module.exports = router;
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 31 2015 21:01:49 GMT+0200 (W. Europe Daylight Time)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 11:22:03 GMT+0200 (W. Europe Daylight Time)</div>
 </div>
 
 <script src="../../prettify.js"></script>
