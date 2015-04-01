@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for api\courses.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../prettify.css">
+
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">api\courses.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">2.73% <small>(3 / 110)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">0% <small>(0 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">0% <small>(0 / 38)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">2.83% <small>(3 / 106)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">api/</a> &#187; courses.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var express = require('express');
+var router = express.Router();
+var Course = require('../../models/course');
+<span class="cstat-no" title="statement not covered" >var qr = require('qr-image');</span>
+&nbsp;
+&nbsp;
+/* GET course list */
+<span class="cstat-no" title="statement not covered" >router.route('/').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >  Course.find({}, {creator:1, name:1, description:1}, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >    res.json({ courses: data});</span>
+<span class="cstat-no" title="statement not covered" >    res.status(200);</span>
+  });
+});
+&nbsp;
+/* GET qr image by course id */
+<span class="cstat-no" title="statement not covered" >router.get('/:id/qr', <span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >  var code = qr.image(req.params.subId.toString(), { type: 'png' });</span>
+<span class="cstat-no" title="statement not covered" >    res.type('png');</span>
+<span class="cstat-no" title="statement not covered" >    code.pipe(res);</span>
+});
+&nbsp;
+/* GET FULL course list */
+<span class="cstat-no" title="statement not covered" >router.route('/full').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >  Course.find({}, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >    res.json({ courses: data});</span>
+<span class="cstat-no" title="statement not covered" >    res.status(200);</span>
+  });
+});
+&nbsp;
+/* GET course by id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >  Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1}, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >    res.json(data);</span>
+<span class="cstat-no" title="statement not covered" >    res.status(200);</span>
+  });
+});
+&nbsp;
+/* GET FULL course list */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/full').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >  Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >    res.json(data);</span>
+<span class="cstat-no" title="statement not covered" >    res.status(200);</span>
+  });
+});
+&nbsp;
+&nbsp;
+/* GET classes by course id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/classes').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >        for (var i = 0, len = data.classes.length; i &lt; len; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            data.classes[i].messages = null;</span>
+<span class="cstat-no" title="statement not covered" >            data.classes[i].attendances = null;</span>
+        }
+<span class="cstat-no" title="statement not covered" >      res.json({ classes: data.classes });</span>
+<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
+    });
+});
+&nbsp;
+/* GET class by course and class id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/classes/:cid').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      var lookup = {};</span>
+<span class="cstat-no" title="statement not covered" >      for (var i = 0, len = data.classes.length; i &lt; len; i++) {</span>
+<span class="cstat-no" title="statement not covered" >          lookup = data.classes[i];</span>
+      }
+<span class="cstat-no" title="statement not covered" >      res.json(lookup);</span>
+<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
+    });
+});
+&nbsp;
+/* GET participants by course id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/participants').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      res.json({ participants: data.participants });</span>
+<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
+    });
+});
+&nbsp;
+/* GET messages by course and class id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/classes/:cid/messages').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      var lookup = {};</span>
+<span class="cstat-no" title="statement not covered" >      for (var i = 0, len = data.classes.length; i &lt; len; i++) {</span>
+<span class="cstat-no" title="statement not covered" >          lookup[data.classes[i]._id] = data.classes[i];</span>
+      }
+<span class="cstat-no" title="statement not covered" >      res.json({ messages: lookup[req.params.cid].messages });</span>
+<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
+    });
+});
+&nbsp;
+/* GET attendances by course and class id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/classes/:cid/attendances').get(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      var lookup = {};</span>
+<span class="cstat-no" title="statement not covered" >      for (var i = 0, len = data.classes.length; i &lt; len; i++) {</span>
+<span class="cstat-no" title="statement not covered" >          lookup[data.classes[i]._id] = data.classes[i];</span>
+      }
+<span class="cstat-no" title="statement not covered" >      res.json({ attendances: lookup[req.params.cid].attendances });</span>
+<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
+    });
+});
+&nbsp;
+/* POST message by course and class id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/classes/:cid/messages').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      var lookup = {};</span>
+<span class="cstat-no" title="statement not covered" >      for (var i = 0, len = data.classes.length; i &lt; len; i++) {</span>
+<span class="cstat-no" title="statement not covered" >          lookup[data.classes[i]._id] = data.classes[i];</span>
+      }
+<span class="cstat-no" title="statement not covered" >      lookup[req.params.cid].messages.push(req.body);</span>
+<span class="cstat-no" title="statement not covered" >      data.save(<span class="fstat-no" title="function not covered" >function(err, savedCourse){</span></span>
+<span class="cstat-no" title="statement not covered" >        if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}</span>
+        else {
+<span class="cstat-no" title="statement not covered" >            res.status(201);</span>
+<span class="cstat-no" title="statement not covered" >            res.send({ message: 'Message added' });</span>
+        }
+      });
+    });
+});
+&nbsp;
+/* POST participant by course id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/participants').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      	data.participants.push(req.body);</span>
+<span class="cstat-no" title="statement not covered" >      	data.save(<span class="fstat-no" title="function not covered" >function(err, savedCourse){</span></span>
+<span class="cstat-no" title="statement not covered" >        if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}</span>
+        else {
+<span class="cstat-no" title="statement not covered" >            res.status(201);</span>
+<span class="cstat-no" title="statement not covered" >            res.send({ message: 'Participant added' });</span>
+        }
+      });
+    });
+});
+&nbsp;
+/* POST class by course id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/classes').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      data.classes.push(req.body);</span>
+<span class="cstat-no" title="statement not covered" >      data.save(<span class="fstat-no" title="function not covered" >function(err, savedCourse){</span></span>
+<span class="cstat-no" title="statement not covered" >        if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}</span>
+        else {
+<span class="cstat-no" title="statement not covered" >            res.status(201);</span>
+<span class="cstat-no" title="statement not covered" >            res.send({ message: 'Class added' });</span>
+        }
+      });
+    });
+});
+&nbsp;
+/* POST attendance by course and class id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/classes/:cid/attendances').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
+<span class="cstat-no" title="statement not covered" >      var lookup = {};</span>
+<span class="cstat-no" title="statement not covered" >      for (var i = 0, len = data.classes.length; i &lt; len; i++) {</span>
+<span class="cstat-no" title="statement not covered" >          lookup[data.classes[i]._id] = data.classes[i];</span>
+      }
+<span class="cstat-no" title="statement not covered" >      lookup[req.params.cid].attendances.push(req.body);</span>
+<span class="cstat-no" title="statement not covered" >      data.save(<span class="fstat-no" title="function not covered" >function(err, savedCourse){</span></span>
+<span class="cstat-no" title="statement not covered" >        if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}</span>
+        else {
+<span class="cstat-no" title="statement not covered" >            res.status(201);</span>
+<span class="cstat-no" title="statement not covered" >            res.send({ message: 'Attendance added' });</span>
+        }
+      });
+    });
+});
+&nbsp;
+/* PUT course by id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/').put(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, course) {</span></span>
+<span class="cstat-no" title="statement not covered" >      course.update(req.body,<span class="fstat-no" title="function not covered" >function(err) {</span></span>
+<span class="cstat-no" title="statement not covered" >          res.status(200);</span>
+<span class="cstat-no" title="statement not covered" >          res.send({ message: 'Course updated' });</span>
+      });
+    });
+});
+&nbsp;
+/* POST course */
+<span class="cstat-no" title="statement not covered" >router.route('/').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    var course = new Course(req.body);</span>
+<span class="cstat-no" title="statement not covered" >    course.save(<span class="fstat-no" title="function not covered" >function(err) {</span></span>
+<span class="cstat-no" title="statement not covered" >      res.send({ message: 'Course added' });</span>
+<span class="cstat-no" title="statement not covered" >        res.status(201);</span>
+    })
+});
+&nbsp;
+&nbsp;
+/* DELETE course by id */
+<span class="cstat-no" title="statement not covered" >router.route('/:id/').delete(<span class="fstat-no" title="function not covered" >function(req, res) {</span></span>
+<span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, course) {	</span></span>
+<span class="cstat-no" title="statement not covered" >    	course.remove()</span>
+<span class="cstat-no" title="statement not covered" >    	res.status(200);</span>
+<span class="cstat-no" title="statement not covered" >    	res.send({ message: 'Course deleted'});</span>
+  	});
+});
+&nbsp;
+<span class="cstat-no" title="statement not covered" >module.exports = router;</span>
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 13:17:31 GMT+0200 (W. Europe Daylight Time)</div>
+</div>
+
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+
+<script src="../sorter.js"></script>
+</body>
+</html>

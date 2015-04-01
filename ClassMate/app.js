@@ -4,25 +4,26 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var flash = require('connect-flash');
+var session = require('express-session');
+
+//Passport
+var passport = require('passport');
+require('./config/passport')(passport); // pass passport for configuration
 
 //Database
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/classmate');
 
 //Models
-require('./model/users');
-require('./model/classes');
-require('./model/messages');
-require('./model/attendances');
-require('./model/courses');
-require('./model/fillTestData')(mongoose,handleError);
+require('./models/user');
+require('./models/course');
+require('./models/fillTestData')();
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var messages = require('./routes/messages');
-var attendances = require('./routes/attendances');
-var classes = require('./routes/classes');
-var courses = require('./routes/courses');
+var auth = require('./routes/auth/index');
+var users = require('./routes/api/users');
+var courses = require('./routes/api/courses');
 
 function handleError(req, res, statusCode, message){
     console.log();
@@ -49,23 +50,32 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// required for passport
+app.use(session({ secret: 'wiljewelwetenhe', resave: false, saveUninitialized: true })); // session secret
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 app.use(function(req,res,next){
     req.mongoose = mongoose;
     next();
 });
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 app.use('/', routes);
-app.use('/users', users);
-app.use('/messages', messages);
-app.use('/attendances', attendances);
-app.use('/classes', classes);
-app.use('/courses', courses);
+app.use('/auth', auth);
+app.use('/api/users', users);
+app.use('/api/courses', courses);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  	var err = new Error('Not Found');
+ 	err.status = 404;
+  	next(err);
 });
 
 // error handlers

@@ -1,0 +1,92 @@
+extends layout
+
+block content
+    #wrapper
+      //All courses created by user
+      div(id="myCoursesList" class="myPage")
+        h2 Your Courses List
+        table(class="table")
+          thead
+            th Name
+            th Description
+            th
+            th
+          tbody
+      //Show a course
+      div(id="myCourse" class="myPage")
+        #CourseInfo
+        table(class="table")
+          thead
+            th Class nr.
+            th Location
+            th Description
+            th Edit
+            th Delete
+          tbody
+        a(class="btn btn-info showMyCourses") Back
+      //Make a new Course
+      div(id="addCourse" class="myPage")
+        form.form-horizontal
+          fieldset
+              legend Create a New Course
+              #message
+              .form-group
+                label.col-md-4.control-label(for='name') Name
+                .col-md-4
+                  input#name.form-control.input-md(name='name', type='text', placeholder='', required='')
+              .form-group
+                label.col-md-4.control-label(for='description') Description
+                .col-md-4
+                  textarea#description.form-control(name='description')
+              .form-group
+                label.col-md-4.control-label(for='submit')
+                .col-md-4
+                  input(type="hidden", name="creator", value="#{ user._id }")
+                  button#createCourse.btn.btn-default(name='submit') Create Course
+        a(class="btn btn-info showMyCourses") Back
+
+      //All courses that user is subscribed to
+      div(id="mySubscribedCoursesList" class="myPage")
+        h2 Your Subscribed Courses List
+        table(class="table")
+          thead
+            th Name
+            th Description
+            th Edit
+            th Delete
+          tbody
+      //Subscribe to a course
+      div(id="subscribeCourse" class="myPage")
+        form.form-horizontal
+          fieldset
+              legend Subscribe to a Course
+              #message
+              input#subscribeUserId(type="hidden" name="id" value="#{ user.id }")
+              .form-group
+                label.col-md-4.control-label(for='name') Course Key
+                .col-md-4
+                  input#key.form-control.input-md(name='name', type='text', required='')
+              .form-group
+                label.col-md-4.control-label(for='submit')
+                .col-md-4
+                  button#subscribe.btn.btn-default(name='submit') Subscribe
+      //Edit a course
+      div(id="editCourse" class="myPage")
+        form.form-horizontal
+          fieldset
+              legend Edit a Course
+              #message
+              #editCourseId
+              .form-group
+                label.col-md-4.control-label(for='name') Name
+                .col-md-4
+                  input#editName.form-control.input-md(name='name', type='text', placeholder='', required='')
+              .form-group
+                label.col-md-4.control-label(for='description') Description
+                .col-md-4
+                  textarea#editDescription.form-control(name='description')
+              .form-group
+                label.col-md-4.control-label(for='submit')
+                .col-md-4
+                  input(type="hidden", name="creator", value="#{ user._id }")
+                  button#updateCourse.btn.btn-default(name='submit') Edit Course

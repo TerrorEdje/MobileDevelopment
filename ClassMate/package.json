@@ -19,7 +19,12 @@
     "passport-google-oauth": "*",
     "passport-local": "*",
     "connect-flash": "*",
-    "connect-roles": "*"
+    "connect-roles": "*",
+    "bcrypt-nodejs": "*",
+    "async":"*",
+    "express-session":"*",
+    "qr-image":"*",
+	"shortid":"*"
   },
   "devDependencies": {
     "chai": "^2.1.2",

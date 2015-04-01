@@ -1,318 +1,126 @@
 #ClassMate REST
 In this list all the routes to the REST service are given.
-A GET request shows the format of the JSON that is returned.
-A POST request shows the format of the request that is send to the server.
-A PUT request shows the format of the request that is send to the server.
-##Courses
-###GET /courses/
-```
-[
-    {
-        "_id": "5510725f81b891200d7cbe5a",
-        "userFullName": "Edwin Hattink",
-        "userId": "egjhatti@avans.nl",
-        "name": "Mobile Development 1",
-        "courseId": "AII-1415C-INMBD1",
-        "description": "Hybrid smartphone apps bouwen",
-        "__v": 0
-    },
-    {
-        "_id": "5510725f81b891200d7cbe5b",
-        "userFullName": "Edwin Hattink",
-        "userId": "egjhatti@avans.nl",
-        "name": "Cloud Services",
-        "courseId": "AII-1415C-INWEBS5",
-        "description": "Cloud services bouwen",
-        "__v": 0
-    },
-    {
-        "_id": "5510725f81b891200d7cbe5c",
-        "userFullName": "Edwin Hattink",
-        "userId": "egjhatti@avans.nl",
-        "name": "Mobile Development 2",
-        "courseId": "AII-1415C-INMBD2",
-        "description": "Native smartphone apps bouwen",
-        "__v": 0
-    }
-]
-```
-###POST /courses/
-```
-userFullName=Edwin+Hattink&userId=egjhatti%40avans.nl&name=Intercultural+Communications&courseId=AII-1415C-ININCC&description=This+course+will+help+students+develop+cross-cultural+understanding+in+professional+situations%2C+especially+for+the+IT+business.+It+will+also+provide+students+with+basic+tools+to+make+these+situations+a+success.+Students+will+be+able+to+reflect+on+their+own+personal+performance.
-```
-###GET /courses/:id/
+##GET /api/courses/
+Response STATUS 200
 ```
 {
-    "_id": "5510725f81b891200d7cbe5a",
-    "userFullName": "Edwin Hattink",
-    "userId": "egjhatti@avans.nl",
+    "courses": [
+        {
+            "_id": "5517de32f8d8d9740cf89f78",
+            "creator": "5517de32f8d8d9740cf89f75",
+            "name": "Mobile Development 1",
+            "description": "Building hybrid apps"
+        }
+    ]
+}
+```
+##GET /api/courses/:id/
+Response STATUS 200
+```
+{
+    "_id": "5517de32f8d8d9740cf89f78",
+    "creator": "5517de32f8d8d9740cf89f75",
     "name": "Mobile Development 1",
-    "courseId": "AII-1415C-INMBD1",
-    "description": "Hybrid smartphone apps bouwen",
-    "__v": 0
+    "description": "Building hybrid apps"
 }
 ```
-###DELETE /courses/:id/
-
-###PUT /courses/:id/
-```
-userFullName=Edwin+Hattink&userId=egjhatti%40avans.nl&courseId=AII-1415C-INWEBS5&description=Cloud+services+bouwen+is+awesome
-```
-
-###GET /courses/:id/classes/
-```
-[
-    {
-        "_id": "5510726a770dc9dc1a5fa3a7",
-        "week": "1",
-        "location": "OB204",
-        "courseId": "5510725f81b891200d7cbe5a",
-        "__v": 0
-    },
-    {
-        "_id": "5510726a770dc9dc1a5fa3a8",
-        "week": "2",
-        "location": "OB204",
-        "courseId": "5510725f81b891200d7cbe5a",
-        "__v": 0
-    },
-    {
-        "_id": "5510726a770dc9dc1a5fa3a9",
-        "week": "3",
-        "location": "OB204",
-        "courseId": "5510725f81b891200d7cbe5a",
-        "__v": 0
-    }
-]
-```
-
-##Classes
-###GET /classes/
-```[
-    {
-        "_id": "5510726a770dc9dc1a5fa3a7",
-        "week": "1",
-        "location": "OB204",
-        "courseId": "5510725f81b891200d7cbe5a",
-        "__v": 0
-    },
-    {
-        "_id": "5510726a770dc9dc1a5fa3a8",
-        "week": "2",
-        "location": "OB204",
-        "courseId": "5510725f81b891200d7cbe5a",
-        "__v": 0
-    },
-    {
-        "_id": "5510726a770dc9dc1a5fa3a9",
-        "week": "3",
-        "location": "OB204",
-        "courseId": "5510725f81b891200d7cbe5a",
-        "__v": 0
-    }
-]
-```
-###POST /classes/
-```
-week=4&location=OB209&courseId=5510725f81b891200d7cbe5a
-```
-###GET /classes/:id/
+##GET /api/courses/:id/classes/
+Response STATUS 200
 ```
 {
-    "_id": "5510726a770dc9dc1a5fa3a7",
-    "week": "1",
-    "location": "OB204",
-    "courseId": "5510725f81b891200d7cbe5a",
-    "__v": 0
+    "classes": [
+        {
+            "date": "2015-03-29T11:12:50.571Z",
+            "location": "OB209",
+            "description": "Presentatie",
+            "_id": "5517de32f8d8d9740cf89f79",
+            "attendances": null,
+            "messages": null
+        }
+    ]
 }
 ```
-###DELETE /classes/:id/
-
-###PUT /classes/:id/
-```
-week=1&location=OB209&courseId=5510725f81b891200d7cbe5a
-```
-
-###GET /classes/:id/messages/
-```
-[
-    {
-        "_id": "551072feaa93ae9c1c352d7a",
-        "userId": "egjhatti@avans.nl",
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Edwin Hattink",
-        "message": "Who is coming to Mobile Development today?",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.456Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7b",
-        "userId": "yahegge@avans.nl",
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yannik Hegge",
-        "message": "Damnit it, I had too much beer last night so I overslept",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.460Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7c",
-        "userId": "ymvanklinken@avans.nl",
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yorick van Klinken",
-        "message": "Meh, I do not care about this class so I am not coming",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.460Z"
-    }
-]
-```
-###GET /classes/:id/attendances/
-```
-[
-    {
-        "_id": "551072feaa93ae9c1c352d7d",
-        "userId": "egjhatti@avans.nl",
-        "status": 1,
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Edwin Hattink",
-        "reason": "",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.470Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7e",
-        "userId": "yahegge@avans.nl",
-        "status": 2,
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yannik Hegge",
-        "reason": "Overslept",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.471Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7f",
-        "userId": "ymvanklinken@avans.nl",
-        "status": 3,
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yorick van Klinken",
-        "reason": "Too lazy",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.472Z"
-    }
-]
-```
-
-##Messages
-###GET /messages/
-```
-[
-    {
-        "_id": "551072feaa93ae9c1c352d7a",
-        "userId": "egjhatti@avans.nl",
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Edwin Hattink",
-        "message": "Who is coming to Mobile Development today?",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.456Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7b",
-        "userId": "yahegge@avans.nl",
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yannik Hegge",
-        "message": "Damnit it, I had too much beer last night so I overslept",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.460Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7c",
-        "userId": "ymvanklinken@avans.nl",
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yorick van Klinken",
-        "message": "Meh, I do not care about this class so I am not coming",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.460Z"
-    }
-]
-```
-###POST /messages/
-```
-message=I love this class.&userFullName=Edwin Hattink&userId=egjhatti@avans.nl&classId=550db8b6b5a237cc1625db0e
-```
-###GET /messages/:id/
+##GET /api/courses/:id/participants/
+Response STATUS 200
 ```
 {
-    "_id": "551072feaa93ae9c1c352d7a",
-    "userId": "egjhatti@avans.nl",
-    "classId": "5510726a770dc9dc1a5fa3a7",
-    "userFullName": "Edwin Hattink",
-    "message": "Who is coming to Mobile Development today?",
-    "__v": 0,
-    "time": "2015-03-23T20:09:34.456Z"
+    "participants": [
+        {
+            "user": "5517de32f8d8d9740cf89f75",
+            "_id": "5517de32f8d8d9740cf89f7c"
+        }
+    ]
 }
 ```
-###DELETE /messages/:id/
-
-###PUT /messages/:id/
-```
-userId=egjhatti%40avans.nl&classId=5510726a770dc9dc1a5fa3a7&userFullName=Edwin+Hattink&message=Who+is+coming+to+Mobile+Development+tomorrow%3F&time=2015-03-23T20%3A09%3A34.456Z
-```
-
-##Attendances
-###GET /attendances/
-```
-[
-    {
-        "_id": "551072feaa93ae9c1c352d7d",
-        "userId": "egjhatti@avans.nl",
-        "status": 1,
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Edwin Hattink",
-        "reason": "",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.470Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7e",
-        "userId": "yahegge@avans.nl",
-        "status": 2,
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yannik Hegge",
-        "reason": "Overslept",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.471Z"
-    },
-    {
-        "_id": "551072feaa93ae9c1c352d7f",
-        "userId": "ymvanklinken@avans.nl",
-        "status": 3,
-        "classId": "5510726a770dc9dc1a5fa3a7",
-        "userFullName": "Yorick van Klinken",
-        "reason": "Too lazy",
-        "__v": 0,
-        "time": "2015-03-23T20:09:34.472Z"
-    }
-]
-```
-###POST /attendances/
-```
-status=2&userFullName=Edwin+Hattink&userId=egjhatti%40avans.nl&classId=550db8b6b5a237cc1625db0e&reason=I+missed+the+train
-```
-###GET /attendances/:id/
+##GET /api/courses/:id/classes/:id/messages/
+Response STATUS 200
 ```
 {
-    "_id": "551072feaa93ae9c1c352d7d",
-    "userId": "egjhatti@avans.nl",
-    "status": 1,
-    "classId": "5510726a770dc9dc1a5fa3a7",
-    "userFullName": "Edwin Hattink",
-    "reason": "",
-    "__v": 0,
-    "time": "2015-03-23T20:09:34.470Z"
+    "messages": [
+        {
+            "user": "5517de32f8d8d9740cf89f75",
+            "message": "Usually nobody comes, so who is coming today?",
+            "_id": "5517de32f8d8d9740cf89f7b",
+            "time": "2015-03-29T11:12:50.571Z"
+        }
+    ]
 }
 ```
-###DELETE /attendances/:id/
-
-###PUT /attendances/:id/
+##GET /courses/:id/classes/:id/attendances/
+Response STATUS 200
 ```
-userId=egjhatti%40avans.nl&classId=5510726a770dc9dc1a5fa3a7&userFullName=Edwin+Hattink&status=2&reason=I+missed+the+train+lol
+{
+    "attendances": [
+        {
+            "user": "5517de32f8d8d9740cf89f75",
+            "_id": "5517de32f8d8d9740cf89f7a",
+            "time": "2015-03-29T11:12:50.571Z",
+            "attendance": 0
+        }
+    ]
+}
+```
+##POST /api/courses/:id/classes/:id/messages/
+Request
+```
+user=5517de32f8d8d9740cf89f75&message=Hi
+```
+Response STATUS 201
+```
+{
+    "message": "Message added"
+}
+```
+##POST /api/courses/:id/classes/:id/attendances/
+Request
+```
+user=5517de32f8d8d9740cf89f75&attendance=1&reason=I+hate+this+class
+```
+Response STATUS 201
+```
+{
+    "message": "Attendance added"
+}
+```
+##PUT /api/courses/:id/
+```
+BUGGED
+```
+##POST /api/courses/
+Request
+```
+creator=5517de32f8d8d9740cf89f75&name=Mobile+Development+1&description=Hybrid
+```
+Response STATUS 201
+```
+{
+    "message": "Course Added"
+}
+```
+##DELETE /api/courses/:id/
+Response STATUS 200
+```
+{
+    "message": "Course deleted"
+}
 ```
