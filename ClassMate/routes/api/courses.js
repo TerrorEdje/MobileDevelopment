@@ -1,13 +1,30 @@
 var express = require('express');
 var router = express.Router();
 var Course = require('../../models/course');
+var qr = require('qr-image');
+
 
 /* GET course list */
 router.route('/').get(function(req, res) {
-  Course.find({}, {creator:1, name:1, description:1}, function(err, data){
+  Course.find({}, {creator:1, name:1, description:1, subId:1}, function(err, data){
     res.json({ courses: data});
     res.status(200);
   });
+});
+
+/* GET course by subid */
+router.route('/subid/:subId').get(function(req, res) {
+  Course.findOne({ subId: req.params.subId },{creator:1, name:1, description:1, subId:1}, function(err, data){
+    res.json(data);
+    res.status(200);
+  });
+});
+
+/* GET qr image by course id */
+router.get('/:id/qr', function(req, res) {
+  var code = qr.image(req.params.subId.toString(), { type: 'png' });
+    res.type('png');
+    code.pipe(res);
 });
 
 /* GET FULL course list */
@@ -18,9 +35,18 @@ router.route('/full').get(function(req, res) {
   });
 });
 
+/* GET FULL course list */
+router.route('/full/:page').get(function(req, res) {
+  var skipp = 10 * req.params.page;
+  Course.find({},{},{ skip: skipp, limit: 10}, function(err, data){
+    res.json({ courses: data});
+    res.status(200);
+  });
+});
+
 /* GET course by id */
 router.route('/:id').get(function(req, res) {
-  Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1}, function(err, data){
+  Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1, subId:1}, function(err, data){
     res.json(data);
     res.status(200);
   });
@@ -38,10 +64,6 @@ router.route('/:id/full').get(function(req, res) {
 /* GET classes by course id */
 router.route('/:id/classes').get(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
-        for (var i = 0, len = data.classes.length; i < len; i++) {
-            data.classes[i].messages = null;
-            data.classes[i].attendances = null;
-        }
       res.json({ classes: data.classes });
       res.status(200);
     });
@@ -114,7 +136,7 @@ router.route('/:id/participants').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
       	data.participants.push(req.body);
       	data.save(function(err, savedCourse){
-        if(err){ return handleError(req, res, 500, err); }
+        if(err){ return res.send(err); }
         else {
             res.status(201);
             res.send({ message: 'Participant added' });
@@ -128,7 +150,7 @@ router.route('/:id/classes').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
       data.classes.push(req.body);
       data.save(function(err, savedCourse){
-        if(err){ return handleError(req, res, 500, err); }
+        if(err){ return res.send(err); }
         else {
             res.status(201);
             res.send({ message: 'Class added' });
@@ -145,8 +167,8 @@ router.route('/:id/classes/:cid/attendances').post(function(req, res) {
           lookup[data.classes[i]._id] = data.classes[i];
       }
       lookup[req.params.cid].attendances.push(req.body);
-      data.save(function(err, savedCourse){
-        if(err){ return handleError(req, res, 500, err); }
+      data.save(function(err){
+        if(err){ return res.send(err); }
         else {
             res.status(201);
             res.send({ message: 'Attendance added' });
@@ -182,6 +204,22 @@ router.route('/:id/').delete(function(req, res) {
     	res.status(200);
     	res.send({ message: 'Course deleted'});
   	});
+});
+
+/* DELETE class by course and class id */
+router.route('/:id/classes/:cid').delete(function(req, res) {
+    Course.findOne({ _id: req.params.id }, function(err, data){
+      for (var i = 0, len = data.classes.length; i < len; i++) {
+        if (data.classes[i]._id == req.params.cid) {
+          data.classes.splice(i,1);
+        }
+      }
+      data.save(function(err) {
+        if (err) { return res.send(err); }
+        res.send({ message: 'Class deleted'});
+        res.status(200);
+      });      
+    });
 });
 
 module.exports = router;

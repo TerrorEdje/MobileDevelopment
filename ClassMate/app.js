@@ -18,7 +18,7 @@ mongoose.connect('mongodb://localhost:27017/classmate');
 //Models
 require('./models/user');
 require('./models/course');
-require('./models/fillTestData')(mongoose,handleError);
+require('./models/fillTestData')();
 
 var routes = require('./routes/index');
 var auth = require('./routes/auth/index');

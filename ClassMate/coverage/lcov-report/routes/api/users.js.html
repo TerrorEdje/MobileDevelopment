@@ -18,16 +18,16 @@
     <h1>Code coverage report for <span class="entity">routes\api\users.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">64.86% <small>(24 / 37)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">51.92% <small>(27 / 52)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">0% <small>(0 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">0% <small>(0 / 6)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">57.14% <small>(8 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">47.06% <small>(8 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">64.86% <small>(24 / 37)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">51.92% <small>(27 / 52)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -100,7 +100,31 @@
 63
 64
 65
-66</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,6 +138,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
@@ -151,6 +182,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,6 +212,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
+var qr = require('qr-image');
+var Course = require('../../models/course');
 &nbsp;
 /* GET user list */
 router.route('/').get(function(req, res) {
@@ -175,6 +221,13 @@ router.route('/').get(function(req, res) {
     	res.json({ users: data});
     	res.status(200);
   	});
+});
+&nbsp;
+/* GET qr image by user id */
+router.get('/:id/qr', <span class="fstat-no" title="function not covered" >function(req, res) {</span>
+<span class="cstat-no" title="statement not covered" >  var code = qr.image(req.params.subId.toString(), { type: 'png' });</span>
+<span class="cstat-no" title="statement not covered" >    res.type('png');</span>
+<span class="cstat-no" title="statement not covered" >    code.pipe(res);</span>
 });
 &nbsp;
 /* GET user by id */
@@ -208,14 +261,27 @@ router.route('/').post(function(req, res) {
 &nbsp;
 /* POST course to user */
 router.route('/:id/courses/').post(<span class="fstat-no" title="function not covered" >function(req, res) {</span>
+<span class="cstat-no" title="statement not covered" >  console.log(req.params.id);</span>
+<span class="cstat-no" title="statement not covered" >  console.log(req.body);</span>
 <span class="cstat-no" title="statement not covered" >    User.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, user) {</span></span>
-<span class="cstat-no" title="statement not covered" >      user.courses.push(req.body);</span>
-<span class="cstat-no" title="statement not covered" >      user.save(req.body,<span class="fstat-no" title="function not covered" >function(err) {</span></span>
+<span class="cstat-no" title="statement not covered" >      if (err) {</span>
+<span class="cstat-no" title="statement not covered" >        return res.send(err);</span>
+      }
+<span class="cstat-no" title="statement not covered" >      user.courses.push(req.body._id);</span>
+<span class="cstat-no" title="statement not covered" >      user.save(<span class="fstat-no" title="function not covered" >function(err) {</span></span>
 <span class="cstat-no" title="statement not covered" >          if (err) {</span>
 <span class="cstat-no" title="statement not covered" >            return res.send(err);</span>
           }
-<span class="cstat-no" title="statement not covered" >          res.status(200);</span>
-<span class="cstat-no" title="statement not covered" >          res.send({ message: 'Course added to User' });</span>
+<span class="cstat-no" title="statement not covered" >          Course.findOne({ _id: req.body._id}, <span class="fstat-no" title="function not covered" >function(err,course) {</span></span>
+<span class="cstat-no" title="statement not covered" >            course.participants.push(req.params.id);</span>
+<span class="cstat-no" title="statement not covered" >            course.save(<span class="fstat-no" title="function not covered" >function(err) {</span></span>
+<span class="cstat-no" title="statement not covered" >              if (err) {</span>
+<span class="cstat-no" title="statement not covered" >                return res.send(err);</span>
+              }
+<span class="cstat-no" title="statement not covered" >              res.status(200);</span>
+<span class="cstat-no" title="statement not covered" >              res.send({ message: 'Course added to User and User added to Course.' });</span>
+            });
+          });
       });
     });
 });
@@ -235,7 +301,7 @@ module.exports = router;
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 11:22:03 GMT+0200 (W. Europe Daylight Time)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 15:28:06 GMT+0200 (W. Europe Daylight Time)</div>
 </div>
 
 <script src="../../prettify.js"></script>

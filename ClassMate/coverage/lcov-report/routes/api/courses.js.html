@@ -18,16 +18,16 @@
     <h1>Code coverage report for <span class="entity">routes\api\courses.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">90.48% <small>(95 / 105)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">88.18% <small>(97 / 110)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">37.5% <small>(3 / 8)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">91.89% <small>(34 / 37)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">89.47% <small>(34 / 38)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">94.06% <small>(95 / 101)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">91.51% <small>(97 / 106)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -222,9 +222,20 @@
 185
 186
 187
-188</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
@@ -232,6 +243,13 @@
 <span class="cline-any cline-yes">10</span>
 <span class="cline-any cline-yes">10</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -412,6 +430,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var express = require('express');
 var router = express.Router();
 var Course = require('../../models/course');
+var qr = require('qr-image');
+&nbsp;
 &nbsp;
 /* GET course list */
 router.route('/').get(function(req, res) {
@@ -419,6 +439,13 @@ router.route('/').get(function(req, res) {
     res.json({ courses: data});
     res.status(200);
   });
+});
+&nbsp;
+/* GET qr image by course id */
+router.get('/:id/qr', <span class="fstat-no" title="function not covered" >function(req, res) {</span>
+<span class="cstat-no" title="statement not covered" >  var code = qr.image(req.params.subId.toString(), { type: 'png' });</span>
+<span class="cstat-no" title="statement not covered" >    res.type('png');</span>
+<span class="cstat-no" title="statement not covered" >    code.pipe(res);</span>
 });
 &nbsp;
 /* GET FULL course list */
@@ -525,7 +552,7 @@ router.route('/:id/participants').post(function(req, res) {
     Course.findOne({ _id: req.params.id }, function(err, data){
       	data.participants.push(req.body);
       	data.save(function(err, savedCourse){
-        <span class="missing-if-branch" title="if path not taken" >I</span>if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(err){ <span class="cstat-no" title="statement not covered" >return res.send(err); </span>}
         else {
             res.status(201);
             res.send({ message: 'Participant added' });
@@ -539,7 +566,7 @@ router.route('/:id/classes').post(<span class="fstat-no" title="function not cov
 <span class="cstat-no" title="statement not covered" >    Course.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >function(err, data){</span></span>
 <span class="cstat-no" title="statement not covered" >      data.classes.push(req.body);</span>
 <span class="cstat-no" title="statement not covered" >      data.save(<span class="fstat-no" title="function not covered" >function(err, savedCourse){</span></span>
-<span class="cstat-no" title="statement not covered" >        if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}</span>
+<span class="cstat-no" title="statement not covered" >        if(err){ <span class="cstat-no" title="statement not covered" >return res.send(err); </span>}</span>
         else {
 <span class="cstat-no" title="statement not covered" >            res.status(201);</span>
 <span class="cstat-no" title="statement not covered" >            res.send({ message: 'Class added' });</span>
@@ -556,8 +583,8 @@ router.route('/:id/classes/:cid/attendances').post(function(req, res) {
           lookup[data.classes[i]._id] = data.classes[i];
       }
       lookup[req.params.cid].attendances.push(req.body);
-      data.save(function(err, savedCourse){
-        <span class="missing-if-branch" title="if path not taken" >I</span>if(err){ <span class="cstat-no" title="statement not covered" >return handleError(req, res, 500, err); </span>}
+      data.save(function(err){
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(err){ <span class="cstat-no" title="statement not covered" >return res.send(err); </span>}
         else {
             res.status(201);
             res.send({ message: 'Attendance added' });
@@ -601,7 +628,7 @@ module.exports = router;
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 11:22:03 GMT+0200 (W. Europe Daylight Time)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Apr 01 2015 15:28:06 GMT+0200 (W. Europe Daylight Time)</div>
 </div>
 
 <script src="../../prettify.js"></script>

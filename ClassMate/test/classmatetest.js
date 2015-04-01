@@ -20,6 +20,19 @@ var expect = require('chai').expect;
 var should = require('chai').should();
 
 describe('Testing courses GET requests', function(){
+	/*it('should drop and fill the database',function(done){
+		mongoose.connection.collections['courses'].drop( function(err) {
+		    console.log('collection dropped');
+		});
+
+		mongoose.connection.collections['users'].drop( function(err) {
+		    console.log('collection dropped');
+		});
+		require('../models/fillTestData')();
+		require('../models/fillTestData')();
+		done();
+	});*/
+	
 	it('should return a 404 status', function(done) {
 		request.get('/courses').expect(404).end(function(err,res) {
 			done();
@@ -173,6 +186,14 @@ describe('Testing POST, PUT and DELETE requests', function(){
 			done();
 		});
 	});
+
+	/*it('should subscribe a user to a course', function(done) {
+		request.get('/api/users/' + user._id + 'courses').send('_id' + course._id).expect(200).end(function(err,res){
+			console.log(res.body);
+			(res.body).should.have.property('message','Course added to User and User added to Course.');
+			done();
+		});
+	});*/
 
 	it('should add a new message', function(done){
 		request.post('/api/courses/' + course._id + '/classes/' + classe._id + '/messages').send('user='+ user._id).send('message','This is a new test message').expect(201).end(function(err, res){

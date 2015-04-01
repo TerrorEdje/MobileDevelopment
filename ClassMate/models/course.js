@@ -31,10 +31,10 @@ var courseSchema = new Schema({
     }]
 });
 
-var Course = mongoose.model('Course', courseSchema);
+courseSchema.path('name').validate(function(val){
+    return val >=0 && val.length <= 30;
+}, 'Name cannot be longer than 30 characters');
 
-/*Course.schema.path('classes/date').validate(function (value) {
-  return /blue|green|white|red|orange|periwinkle/i.test(value);
-}, 'Invalid color');*/
+var Course = mongoose.model('Course', courseSchema);
 
 module.exports = Course;

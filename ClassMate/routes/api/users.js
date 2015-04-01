@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
+var qr = require('qr-image');
 var Course = require('../../models/course');
 
 /* GET user list */
@@ -11,9 +12,24 @@ router.route('/').get(function(req, res) {
   	});
 });
 
+/* GET qr image by user id */
+router.get('/:id/qr', function(req, res) {
+  var code = qr.image(req.params.subId.toString(), { type: 'png' });
+    res.type('png');
+    code.pipe(res);
+});
+
 /* GET user by id */
 router.route('/:id').get(function(req, res) {
 	User.findOne({ _id: req.params.id }, function(err, data){
+    res.json(data);
+    res.status(200);
+  });
+});
+
+/* GET user by subid */
+router.route('/subid/:subid').get(function(req, res) {
+  User.findOne({ subId: req.params.subid }, function(err, data){
     res.json(data);
     res.status(200);
   });
