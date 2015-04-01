@@ -12,7 +12,7 @@ router.route('/').get(function(req, res) {
   });
 });
 
-/* GET course by id */
+/* GET course by subid */
 router.route('/subid/:subId').get(function(req, res) {
   Course.findOne({ subId: req.params.subId },{creator:1, name:1, description:1, subId:1}, function(err, data){
     res.json(data);

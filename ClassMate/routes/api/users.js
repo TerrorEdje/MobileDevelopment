@@ -27,6 +27,14 @@ router.route('/:id').get(function(req, res) {
   });
 });
 
+/* GET user by subid */
+router.route('/subid/:subid').get(function(req, res) {
+  User.findOne({ subId: req.params.subid }, function(err, data){
+    res.json(data);
+    res.status(200);
+  });
+});
+
 /* PUT user by id */
 router.route('/:id/').put(function(req, res) {
   	console.log(req.body);
