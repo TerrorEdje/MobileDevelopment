@@ -43,6 +43,7 @@ block content
                 .col-md-4
                   input(type="hidden", name="creator", value="#{ user._id }")
                   button#createCourse.btn.btn-default(name='submit') Create Course
+        a(class="btn btn-info showMyCourses") Back
 
       //All courses that user is subscribed to
       div(id="mySubscribedCoursesList" class="myPage")
@@ -56,4 +57,36 @@ block content
           tbody
       //Subscribe to a course
       div(id="subscribeCourse" class="myPage")
-        h2 Subscribe to a Course
+        form.form-horizontal
+          fieldset
+              legend Subscribe to a Course
+              #message
+              input#subscribeUserId(type="hidden" name="id" value="#{ user.id }")
+              .form-group
+                label.col-md-4.control-label(for='name') Course Key
+                .col-md-4
+                  input#key.form-control.input-md(name='name', type='text', required='')
+              .form-group
+                label.col-md-4.control-label(for='submit')
+                .col-md-4
+                  button#subscribe.btn.btn-default(name='submit') Subscribe
+      //Edit a course
+      div(id="editCourse" class="myPage")
+        form.form-horizontal
+          fieldset
+              legend Edit a Course
+              #message
+              #editCourseId
+              .form-group
+                label.col-md-4.control-label(for='name') Name
+                .col-md-4
+                  input#editName.form-control.input-md(name='name', type='text', placeholder='', required='')
+              .form-group
+                label.col-md-4.control-label(for='description') Description
+                .col-md-4
+                  textarea#editDescription.form-control(name='description')
+              .form-group
+                label.col-md-4.control-label(for='submit')
+                .col-md-4
+                  input(type="hidden", name="creator", value="#{ user._id }")
+                  button#updateCourse.btn.btn-default(name='submit') Edit Course

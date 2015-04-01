@@ -42,29 +42,38 @@ router.route('/').post(function(req, res) {
 
 /* POST course to user */
 router.route('/:id/courses/').post(function(req, res) {
-  console.log(req.params.id);
-  console.log(req.body);
+  var courseId;
+  Course.findOne({ subId: req.body.id}, function(err,course) {
+    console.log(course);
+    if (course == null) {
+      res.status(200);
+      return res.send({message: "No Course found with that key"});
+    }
+    if (err) {
+      return res.send(err);
+    }
+    courseId = course._id;
+    course.participants.push(req.params.id);
+    course.save(function(err) {
+      if (err) {
+        return res.send(err);
+      }
+      res.status(200);
+    });
     User.findOne({ _id: req.params.id }, function(err, user) {
       if (err) {
         return res.send(err);
       }
-      user.courses.push(req.body._id);
+      user.courses.push(courseId);
       user.save(function(err) {
-          if (err) {
-            return res.send(err);
-          }
-          Course.findOne({ _id: req.body._id}, function(err,course) {
-            course.participants.push(req.params.id);
-            course.save(function(err) {
-              if (err) {
-                return res.send(err);
-              }
-              res.status(200);
-              res.send({ message: 'Course added to User and User added to Course.' });
-            });
-          });
+        if (err) {
+          return res.send(err);
+        }
+        res.status(200);
+        res.send({ message: 'User subscribed'});
       });
     });
+  });
 });
 
 /* DELETE user by id */
