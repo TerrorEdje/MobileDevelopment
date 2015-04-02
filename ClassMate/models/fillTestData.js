@@ -15,7 +15,7 @@ function fillTestData()
 							creator: user1._id,
 							name: 'Mobile Development 1',
 							description: 'Building hybrid apps',
-							participants: [{ user: user1._id }],
+							participants: [ user1._id ],
 							classes: [{
 								date: new Date(),
 								location: 'OB209',

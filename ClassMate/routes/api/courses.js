@@ -9,28 +9,29 @@ var Course = require('../../models/course');
 	page: 0 or higher (default no pages)
 */
 router.route('/').get(function(req, res) {
-	var page = {};
-	var selection = {creator:1, name:1, description:1, subId:1};
-	var search = { _id: req.params.id };
+	var selection = { classes:0, participants:0 };
 	if (req.query.classes === 'true') {
-		selection["classes"] = 1;
+		delete selection.classes;
 	}
 	if (req.query.participants === 'true') {
-		selection["participants"] = 1;
+		delete selection.participants;
 	}
-	if (req.query.page)
-	{
+	var page = {};
+	if (req.query.page)	{
+		if (isNaN(req.query.page)) {
+    		res.status(400)
+			return res.send('Page has to be a number');
+		}
 		page = { skip: 10 * req.query.page, limit: 10};
 	}
 	Course.find({}, selection, page, function(err, data){
-		if (err) { return res.send(err) };
-		if (data.length == 0)
-		{
+		if (err) { res.status(404); return res.send(err) };
+		if (data.length == 0) {
 			res.status(404);
 			return res.send('Not found');
 		}
-		res.json({ courses: data});
-		return res.status(200); 
+		res.status(200); 
+		return res.send({ courses: data});
 	});	 	
 });
 
@@ -41,27 +42,30 @@ router.route('/').get(function(req, res) {
 	type: id or subId (default id)
 */
 router.route('/:id').get(function(req, res) {
-	var selection = {creator:1, name:1, description:1, subId:1};
-	var search = { _id: req.params.id };
+	var selection = { classes:0, participants:0 };
 	if (req.query.classes === 'true') {
-		selection["classes"] = 1;
+		delete selection.classes;
 	}
 	if (req.query.participants === 'true') {
-		selection["participants"] = 1;
+		delete selection.participants;
 	}
+	var search = { _id: req.params.id };
 	if (req.query.type === 'subId')	{
 		search = { subId: req.params.id };
 	}
 	Course.findOne(search,selection, function(err, data){
-		if (data) { 
-			res.json(data);
-			return res.status(200);
+		if(err) { 
+			res.status(404);
+			return res.send(err); 
 		}
-		else
-		{
+		if (data) { 
+			res.status(200);
+			return res.send(data);
+		}
+		else {
 			res.status(404);
 			return res.send('Not found');
-		} 	
+		}
 	});
 });
 
@@ -69,24 +73,25 @@ router.route('/:id').get(function(req, res) {
 	QUERY
 	messages: true or false (default false)
 	attendances: true or false  (default false)
-	*/
+*/
 router.route('/:id/classes').get(function(req, res) {
 	var messages = (req.query.messages === 'true');
 	var attendances = (req.query.attendances === 'true');
 	Course.findOne({ _id: req.params.id },{ classes:1 }, function(err, data){
 		if (err) { 
 			res.status(404);
-			return res.send('Not found'); 
+			return res.send(err); 
 		}
-		else
-		{
-			for (var i = 0, len = data.classes.length; i < len; i++) {
-				if (!messages) { data.classes[i].messages = undefined; }
-				if (!attendances) { data.classes[i].attendances = undefined; }
-			}      		
-			res.json({ classes: data.classes });
-			return res.status(200);
-		}      
+		if (!data) {
+			res.status(404);
+			return res.send('Not found');
+		}
+		for (var i = 0, len = data.classes.length; i < len; i++) {
+			if (!messages) { data.classes[i].messages = undefined; }
+			if (!attendances) { data.classes[i].attendances = undefined; }
+		}      		
+		res.status(200); 
+		return res.send({ classes: data.classes }); 
 	});
 });
 
@@ -94,30 +99,33 @@ router.route('/:id/classes').get(function(req, res) {
 	QUERY
 	messages: true or false (default false)
 	attendances: true or false  (default false)
-	*/
+*/
 router.route('/:id/classes/:cid').get(function(req, res) {
 	var messages = (req.query.messages === 'true');
 	var attendances = (req.query.attendances === 'true');
 	Course.findOne({ _id: req.params.id },{ classes:1 }, function(err, data){
 		if (err) { 
 			res.status(404);
-			return res.send('Not found'); 
+			return res.send(err);			
 		}
-		else
-		{
+		if (data) {
 			var classe = data.classes.id(req.params.cid);
 			if (!messages) { classe.messages = undefined; }
 			if (!attendances) { classe.attendances = undefined; }     		
-			res.json(classe);
-			return res.status(200);
+			res.status(200);
+			return res.json(classe);
 		}      
+		else {
+			res.status(404);
+			return res.send('Not found');
+		}
 	});
 });
 
 /* POST message/attendance by course and class id 
 	QUERY
 	type: message or attendance (REQUIRED)
-	*/
+*/
 router.route('/:id/classes/:cid').post(function(req, res) {
 	if (!req.query.type)
 	{
@@ -127,6 +135,10 @@ router.route('/:id/classes/:cid').post(function(req, res) {
 	Course.findOne({ _id: req.params.id }, function(err, data){
 		if (err) { 
 			res.status(404);
+			return res.send(err); 
+		}
+		if (!data) {
+			res.status(404);
 			return res.send('Not found');
 		}
 		if (req.query.type == 'message') {	data.classes.id(req.params.cid).messages.push(req.body); }
@@ -134,7 +146,7 @@ router.route('/:id/classes/:cid').post(function(req, res) {
 		else { res.status(400);	return res.send('Wrong type'); }
 		data.save(function(err, savedCourse){
 			if(err) { 
-				res.status(500);
+				res.status(400);
 				return res.send(err); 
 			}
 			else {
@@ -146,35 +158,26 @@ router.route('/:id/classes/:cid').post(function(req, res) {
 	});
 });
 
-/* POST participant/class by course id 
-	QUERY
-	type: participant or class (REQUIRED)
-	*/
+/* POST class by course id */
 router.route('/:id').post(function(req, res) {
-	if (!req.query.type)
-	{
-		res.status(400)
-		return res.send('Missing type');
-	}
 	Course.findOne({ _id: req.params.id }, function(err, data){
 		if (err) { 
 			res.status(404);
-			return res.send('Not found');
+			return res.send(err);
 		}
-		if (req.query.type == 'class') {	data.classes.push(req.body); }
-		else if (req.query.type == 'participant') { data.participants.push(req.body); }
-		else { res.status(400);	return res.send('Wrong type'); }
-		data.save(function(err, savedCourse){
-			if(err) { 
-				res.status(500);
-				return res.send(err); 
-			}
-			else {
-				res.status(201);
-				if (req.query.type == 'class') { return res.send('Class added'); }
-				if (req.query.type == 'participant') { return res.send('Participant added'); }
-			}
-	  });
+		if (data) {
+			data.classes.push(req.body);
+			data.save(function(err){
+				if(err) { 
+					res.status(400);
+					return res.send(err); 
+				}
+				else {
+					res.status(201);
+					return res.send('Class added'); 
+				}
+		  	});
+		}
 	});
 });
 
@@ -182,14 +185,18 @@ router.route('/:id').post(function(req, res) {
 router.route('/:id/').put(function(req, res) {
 	Course.findOne({ _id: req.params.id }, function(err, course) {
 		if (err) { return res.send(err); }
+		if (!course) {
+			res.status(404);
+			return res.send('Not found');
+		}
 		course.update(req.body,function(err) {
 			if (err) { 
-				res.status(500); 
+				res.status(400); 
 				return res.send(err); 
 			}
 			res.status(200);
 			return res.send('Course updated');
-	  });
+		});
 	});
 });
 
@@ -198,12 +205,12 @@ router.route('/').post(function(req, res) {
 	var course = new Course(req.body);
 	course.save(function(err) {
 		if (err) {
-			res.status(500);
+			res.status(400);
 			return res.send(err);
 		}      	
 		res.status(201);
 		return res.send('Course added');
-	})
+	});
 });
 
 
@@ -214,9 +221,13 @@ router.route('/:id/').delete(function(req, res) {
 			res.status(404);
 			return res.send(err);
 		}
-		course.remove()
+		if (!course) {
+			res.status(404); 
+			return res.send('Not found');
+		}
+		course.remove();
 		res.status(200);
-		res.send('Course deleted');
+		return res.send('Course deleted');
 	});
 });
 
@@ -226,6 +237,10 @@ router.route('/:id/classes/:cid').delete(function(req, res) {
 	  	if (err) {
 			res.status(404);
 			return res.send(err);
+		}
+		if (!data) {
+			res.status(404);
+			return res.send('Not found');
 		}
 		data.classes.id(req.params.cid).remove();
 	  	data.save(function(err) {
