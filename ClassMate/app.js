@@ -13,8 +13,8 @@ require('./config/passport')(passport); // pass passport for configuration
 
 //Database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/classmate');
-//mongoose.connect('mongodb://test:test@ds039311.mongolab.com:39311/classmate');
+//mongoose.connect('mongodb://localhost:27017/classmate');
+mongoose.connect('mongodb://test:test@ds039311.mongolab.com:39311/classmate');
 
 //Models
 require('./models/user');
