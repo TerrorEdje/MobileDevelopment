@@ -4,7 +4,8 @@ var Course = require('../../models/course');
 
 /* 	GET course list 
 	QUERY 
-	full: true or false (default false)
+	classes: true or false (default false)
+	participants: true or false (default false)
 	page: 0 or higher (default no pages)
 */
 router.route('/').get(function(req, res) {
