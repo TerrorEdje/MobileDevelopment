@@ -12,13 +12,6 @@ router.route('/').get(function(req, res) {
   	});
 });
 
-/* GET qr image by user id */
-router.get('/:id/qr', function(req, res) {
-  var code = qr.image(req.params.subId.toString(), { type: 'png' });
-    res.type('png');
-    code.pipe(res);
-});
-
 /* GET user by id */
 router.route('/:id').get(function(req, res) {
 	User.findOne({ _id: req.params.id }, function(err, data){
