@@ -1,70 +1,70 @@
 var express = require('express');
 var router = express.Router();
 var Course = require('../../models/course');
-var qr = require('qr-image');
 
-
-/* GET course list */
+/* 	GET course list 
+	QUERY 
+	full: true or false (default false)
+	page: 0 or higher (default no pages)
+*/
 router.route('/').get(function(req, res) {
-  Course.find({}, {creator:1, name:1, description:1, subId:1}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json({ courses: data});
-    res.status(200);
-  });
+	var page = {};
+	var selection = {creator:1, name:1, description:1, subId:1};
+	if (req.query.page)
+	{
+		page = { skip: 10 * req.query.page, limit: 10};
+	}
+	if (req.query.full) {
+		if (req.query.full == 'true')
+		{
+			selection = {};
+		}
+	}
+	Course.find({}, selection, page, function(err, data){
+    	if (err) { return res.send(err) };
+    	if (data.length == 0)
+    	{
+    		res.status(404);
+    	 	return res.send({ message: 'Nothing found.'});
+    	}
+		res.json({ courses: data});
+		return res.status(200); 
+  	});	 	
 });
 
-/* GET course by subid */
-router.route('/subid/:subId').get(function(req, res) {
-  Course.findOne({ subId: req.params.subId },{creator:1, name:1, description:1, subId:1}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json(data);
-    res.status(200);
-  });
-});
-
-/* GET qr image by course id */
-router.get('/:id/qr', function(req, res) {
-  var code = qr.image(req.params.subId.toString(), { type: 'png' });
-    res.type('png');
-    code.pipe(res);
-});
-
-/* GET FULL course list */
-router.route('/full').get(function(req, res) {
-  Course.find({}, function(err, data){
-    res.json({ courses: data});
-    res.status(200);
-  });
-});
-
-/* GET FULL course list */
-router.route('/full/:page').get(function(req, res) {
-  var skipp = 10 * req.params.page;
-  Course.find({},{},{ skip: skipp, limit: 10}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json({ courses: data});
-    res.status(200);
-  });
-});
-
-/* GET course by id */
+/* 	GET course by id or subId
+	QUERY 
+	full: true or false (default false)
+	type: id or subId (default id)
+*/
 router.route('/:id').get(function(req, res) {
-  Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1, subId:1}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json(data);
-    res.status(200);
-  });
+	var selection = {creator:1, name:1, description:1, subId:1};
+	var search = { _id: req.params.id };
+	if (req.query.full) {
+		if (req.query.full == 'true')
+		{
+			selection = {};
+		}
+	}
+	if (req.query.type)
+	{
+		if (req.query.type == 'subId')
+		{
+			search = { subId: req.params.id };
+		}
+	}
+  	Course.findOne(search,selection, function(err, data){
+    	if (data) { 
+    		res.json(data);
+    		return res.status(200);
+    	}
+    	else
+    	{
+    		res.send({ message: 'Could not find anything' });
+    		return res.status(404);
+    	} 	
+  	});
 });
-
-/* GET FULL course list */
-router.route('/:id/full').get(function(req, res) {
-  Course.findOne({ _id: req.params.id }, function(err, data){
-    if (err) { return res.send(err) };
-    res.json(data);
-    res.status(200);
-  });
-});
-
 
 /* GET classes by course id */
 router.route('/:id/classes').get(function(req, res) {

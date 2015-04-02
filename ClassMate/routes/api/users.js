@@ -6,7 +6,7 @@ var Course = require('../../models/course');
 
 /* GET user list */
 router.route('/').get(function(req, res) {
-  	User.find({}, function(err, data){
+ 	User.find({}, function(err, data){
     	res.json({ users: data});
     	res.status(200);
   	});
