@@ -29,7 +29,7 @@ block content
         form.form-horizontal
           fieldset
               legend Create a New Course
-              #message
+              .message
               .form-group
                 label.col-md-4.control-label(for='name') Name
                 .col-md-4
@@ -60,7 +60,7 @@ block content
         form.form-horizontal
           fieldset
               legend Subscribe to a Course
-              #message
+              .message
               input#subscribeUserId(type="hidden" name="id" value="#{ user.id }")
               .form-group
                 label.col-md-4.control-label(for='name') Course Key
@@ -75,7 +75,7 @@ block content
         form.form-horizontal
           fieldset
               legend Edit a Course
-              #message
+              .message
               #editCourseId
               .form-group
                 label.col-md-4.control-label(for='name') Name
@@ -90,3 +90,31 @@ block content
                 .col-md-4
                   input(type="hidden", name="creator", value="#{ user._id }")
                   button#updateCourse.btn.btn-default(name='submit') Edit Course
+      //Create a new Class
+      div(id="addClass" class="myPage")
+              form.form-horizontal
+                fieldset
+                    legend Create a New Class
+                    .message
+                    #CourseIdforClass
+                    .form-group
+                      label.col-md-4.control-label(for='date') Date
+                      .col-md-4
+                        input#classDate.form-control.input-md(name='date', type='date', placeholder='', required='')
+                    .form-group
+                      label.col-md-4.control-label(for='time') Time
+                      .col-md-4
+                        input#classTime.form-control.input-md(name='time', type='time', placeholder='', required='')
+                    .form-group
+                      label.col-md-4.control-label(for='location') Location
+                      .col-md-4
+                        input#classLocation.form-control.input-md(name='location', type='text', placeholder='', required='')
+                    .form-group
+                      label.col-md-4.control-label(for='description') Description
+                      .col-md-4
+                        textarea#classDescription.form-control(name='description')
+                    .form-group
+                      label.col-md-4.control-label(for='submit')
+                      .col-md-4
+                        button#createClass.btn.btn-default(name='submit') Create Course
+              a(class="btn btn-info showMyCourses") Back

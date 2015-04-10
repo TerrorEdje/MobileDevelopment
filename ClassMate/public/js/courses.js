@@ -14,6 +14,7 @@ $(".showMyCourses").click(function(){
 });
 
 $(".addCourse").click(function(){
+    $(".message").text("");
     $(".myPage").hide();
     $("#addCourse").show();
 });
@@ -29,6 +30,7 @@ $(".subscribeCourse").click(function(){
 });
 
 function showMyCourses() {
+    $(".message").text("");
     $(".myPage").hide();
     populateTable();
     $("#myCoursesList").show();
@@ -37,7 +39,7 @@ function showMyCourses() {
 $(document.body).on('click', '.linkshowcourse', showCourseInfo);
 $(document.body).on('click','.linkeditcourse',editCourse);
 $(document.body).on('click','.linkdeletecourse',deleteCourse);
-
+$(document.body).on('click', '.linkaddclass', addClass);
 $(document.body).on('click', '.linkshowclass', showClassInfo);
 $(document.body).on('click', '.linkdeleteclass', deleteClass);
 $(document.body).on('click', '.linkeditclass', editClass);
@@ -116,7 +118,7 @@ $('#createCourse').click(function(event) {
             $(".form-horizontal")[0].reset();
             showMyCourses();
         }else{
-            $('#message').text(data.errors.name.message);
+            $('.message').text("Make sure you filled in all the required fields.");
         }
     });
 });
@@ -179,7 +181,7 @@ $('#subscribe').click(function(event) {
             $(".form-horizontal")[0].reset();
             showMyCourses();
         }else{
-            $('#subscribeMessage').text("data.message");
+            $('.message').text("Make sure you used the right key and that you're not already in the course.");
         }
     });
 });
@@ -224,17 +226,28 @@ function showClassInfo(event) {
     $("#myCourse").show();
 };
 
+function addClass(event) {
+    event.preventDefault();
+    var thisCourseId = $(this).attr('rel');
+    $('#CourseIdforClass').remove("courseId");
+    $('#CourseIdforClass').html("<input type='hidden' name='courseId' value='" + thisCourseId + "''>");
+    
+    $(".message").text("");
+    $(".myPage").hide();
+    $("#addClass").show();
+};
+
 $('#createClass').click(function(event) {
     event.preventDefault();
-
-    var form = $(this).closest('form').serialize();
-    $.post('/api/courses', form, function(data) {
+    var form = "date=" + $("#classDate").val() + "T" + $("#classTime").val() + ".000Z&location=" + $("#classLocation").val() + "&description=" + $("#classDescription").val();
+    console.log(form);
+    $.post('/api/courses/' + $('#CourseIdforClass input').val() + '/classes', form, function(data) {
         console.log(data);
-        if (data.message == "Course added") {
+        if (data.message == "Class added") {
             $(".form-horizontal")[0].reset();
             showMyCourses();
         }else{
-            $('#message').text(data.errors.name.message);
+            $('.message').text("Make sure you fill in all required fields.");
         }
     });
 });
