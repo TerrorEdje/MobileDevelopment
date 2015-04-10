@@ -7,7 +7,7 @@ var courseSchema = new Schema({
     subId: { type: String, unique: true, default: shortid.generate },
     name: { type: String, required: true },
     description: { type: String },
-    participants: [{ user: {type: Schema.Types.ObjectId, ref: 'User' }}],
+    participants: [{ type: Schema.Types.ObjectId, unique: true, ref: 'User' }],
     classes: [{
     	date: { type: Date },
     	location: { type: String },
@@ -20,7 +20,7 @@ var courseSchema = new Schema({
     	attendances: [{
     		user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     		reason: { type: String },
-    		attendance: { type: Number, default: 0 }, // 0 = present. 1 = too late. 2 = absent
+    		attendance: { type: Number, min:0, max:2, default: 0 }, // 0 = present. 1 = too late. 2 = absent
     		time: { type: Date, default: Date.now },
     		arrivalTime: { type: Date },
     		location : {

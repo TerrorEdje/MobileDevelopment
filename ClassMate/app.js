@@ -13,7 +13,8 @@ require('./config/passport')(passport); // pass passport for configuration
 
 //Database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/classmate');
+//mongoose.connect('mongodb://localhost:27017/classmate');
+mongoose.connect('mongodb://test:test@ds039311.mongolab.com:39311/classmate');
 
 //Models
 require('./models/user');
@@ -24,6 +25,8 @@ var routes = require('./routes/index');
 var auth = require('./routes/auth/index');
 var users = require('./routes/api/users');
 var courses = require('./routes/api/courses');
+var api = require('./routes/api/api');
+
 
 function handleError(req, res, statusCode, message){
     console.log();
@@ -70,6 +73,7 @@ app.use('/', routes);
 app.use('/auth', auth);
 app.use('/api/users', users);
 app.use('/api/courses', courses);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

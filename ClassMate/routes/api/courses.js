@@ -1,242 +1,257 @@
 var express = require('express');
 var router = express.Router();
 var Course = require('../../models/course');
-var qr = require('qr-image');
 
-
-/* GET course list */
+/* 	GET course list 
+	QUERY 
+	classes: true or false (default false)
+	participants: true or false (default false)
+	page: 0 or higher (default no pages)
+*/
 router.route('/').get(function(req, res) {
-  Course.find({}, {creator:1, name:1, description:1, subId:1}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json({ courses: data});
-    res.status(200);
-  });
+	var selection = { classes:0, participants:0 };
+	if (req.query.classes === 'true') {
+		delete selection.classes;
+	}
+	if (req.query.participants === 'true') {
+		delete selection.participants;
+	}
+	var page = {};
+	if (req.query.page)	{
+		if (isNaN(req.query.page)) {
+    		res.status(400)
+			return res.send('Page has to be a number');
+		}
+		page = { skip: 10 * req.query.page, limit: 10};
+	}
+	Course.find({}, selection, page, function(err, data){
+		if (err) { res.status(404); return res.send(err) };
+		if (data.length == 0) {
+			res.status(404);
+			return res.send('Not found');
+		}
+		res.status(200); 
+		return res.send({ courses: data});
+	});	 	
 });
 
-/* GET course by subid */
-router.route('/subid/:subId').get(function(req, res) {
-  Course.findOne({ subId: req.params.subId },{creator:1, name:1, description:1, subId:1}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json(data);
-    res.status(200);
-  });
-});
-
-/* GET qr image by course id */
-router.get('/:id/qr', function(req, res) {
-  var code = qr.image(req.params.subId.toString(), { type: 'png' });
-    res.type('png');
-    code.pipe(res);
-});
-
-/* GET FULL course list */
-router.route('/full').get(function(req, res) {
-  Course.find({}, function(err, data){
-    res.json({ courses: data});
-    res.status(200);
-  });
-});
-
-/* GET FULL course list */
-router.route('/full/:page').get(function(req, res) {
-  var skipp = 10 * req.params.page;
-  Course.find({},{},{ skip: skipp, limit: 10}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json({ courses: data});
-    res.status(200);
-  });
-});
-
-/* GET course by id */
+/* 	GET course by id or subId
+	QUERY 
+	classes: true or false (default false)
+	participants: true or false (default false)
+	type: id or subId (default id)
+*/
 router.route('/:id').get(function(req, res) {
-  Course.findOne({ _id: req.params.id },{creator:1, name:1, description:1, subId:1}, function(err, data){
-    if (err) { return res.send(err) };
-    res.json(data);
-    res.status(200);
-  });
+	var selection = { classes:0, participants:0 };
+	if (req.query.classes === 'true') {
+		delete selection.classes;
+	}
+	if (req.query.participants === 'true') {
+		delete selection.participants;
+	}
+	var search = { _id: req.params.id };
+	if (req.query.type === 'subId')	{
+		search = { subId: req.params.id };
+	}
+	Course.findOne(search,selection, function(err, data){
+		if(err) { 
+			res.status(404);
+			return res.send(err); 
+		}
+		if (data) { 
+			res.status(200);
+			return res.send(data);
+		}
+		else {
+			res.status(404);
+			return res.send('Not found');
+		}
+	});
 });
 
-/* GET FULL course list */
-router.route('/:id/full').get(function(req, res) {
-  Course.findOne({ _id: req.params.id }, function(err, data){
-    if (err) { return res.send(err) };
-    res.json(data);
-    res.status(200);
-  });
-});
-
-
-/* GET classes by course id */
+/* 	GET classes by course id 
+	QUERY
+	messages: true or false (default false)
+	attendances: true or false  (default false)
+*/
 router.route('/:id/classes').get(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      res.json({ classes: data.classes });
-      res.status(200);
-    });
+	var messages = (req.query.messages === 'true');
+	var attendances = (req.query.attendances === 'true');
+	Course.findOne({ _id: req.params.id },{ classes:1 }, function(err, data){
+		if (err) { 
+			res.status(404);
+			return res.send(err); 
+		}
+		if (!data) {
+			res.status(404);
+			return res.send('Not found');
+		}
+		for (var i = 0, len = data.classes.length; i < len; i++) {
+			if (!messages) { data.classes[i].messages = undefined; }
+			if (!attendances) { data.classes[i].attendances = undefined; }
+		}      		
+		res.status(200); 
+		return res.send({ classes: data.classes }); 
+	});
 });
 
-/* GET class by course and class id */
+/* 	GET class by course and class id 	
+	QUERY
+	messages: true or false (default false)
+	attendances: true or false  (default false)
+*/
 router.route('/:id/classes/:cid').get(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      var lookup = {};
-      for (var i = 0, len = data.classes.length; i < len; i++) {
-          lookup = data.classes[i];
-      }
-      res.json(lookup);
-      res.status(200);
-    });
+	var messages = (req.query.messages === 'true');
+	var attendances = (req.query.attendances === 'true');
+	Course.findOne({ _id: req.params.id },{ classes:1 }, function(err, data){
+		if (err) { 
+			res.status(404);
+			return res.send(err);			
+		}
+		if (data) {
+			var classe = data.classes.id(req.params.cid);
+			if (!messages) { classe.messages = undefined; }
+			if (!attendances) { classe.attendances = undefined; }     		
+			res.status(200);
+			return res.json(classe);
+		}      
+		else {
+			res.status(404);
+			return res.send('Not found');
+		}
+	});
 });
 
-/* GET participants by course id */
-router.route('/:id/participants').get(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      res.json({ participants: data.participants });
-      res.status(200);
-    });
-});
-
-/* GET messages by course and class id */
-router.route('/:id/classes/:cid/messages').get(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      var lookup = {};
-      for (var i = 0, len = data.classes.length; i < len; i++) {
-          lookup[data.classes[i]._id] = data.classes[i];
-      }
-      res.json({ messages: lookup[req.params.cid].messages });
-      res.status(200);
-    });
-});
-
-/* GET attendances by course and class id */
-router.route('/:id/classes/:cid/attendances').get(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      var lookup = {};
-      for (var i = 0, len = data.classes.length; i < len; i++) {
-          lookup[data.classes[i]._id] = data.classes[i];
-      }
-      res.json({ attendances: lookup[req.params.cid].attendances });
-      res.status(200);
-    });
-});
-
-/* POST message by course and class id */
-router.route('/:id/classes/:cid/messages').post(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      var lookup = {};
-      for (var i = 0, len = data.classes.length; i < len; i++) {
-          lookup[data.classes[i]._id] = data.classes[i];
-      }
-      lookup[req.params.cid].messages.push(req.body);
-      data.save(function(err, savedCourse){
-        if(err){ return handleError(req, res, 500, err); }
-        else {
-            res.status(201);
-            res.send({ message: 'Message added' });
-        }
-      });
-    });
-});
-
-/* POST participant by course id */
-router.route('/:id/participants').post(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      	data.participants.push(req.body);
-      	data.save(function(err, savedCourse){
-        if(err){ return res.send(err); }
-        else {
-            res.status(201);
-            res.send({ message: 'Participant added' });
-        }
-      });
-    });
+/* POST message/attendance by course and class id 
+	QUERY
+	type: message or attendance (REQUIRED)
+*/
+router.route('/:id/classes/:cid').post(function(req, res) {
+	if (!req.query.type)
+	{
+		res.status(400);
+		return res.send('Missing type');
+	}
+	Course.findOne({ _id: req.params.id }, function(err, data){
+		if (err) { 
+			res.status(404);
+			return res.send(err); 
+		}
+		if (!data) {
+			res.status(404);
+			return res.send('Not found');
+		}
+		if (req.query.type == 'message') {	data.classes.id(req.params.cid).messages.push(req.body); }
+		else if (req.query.type == 'attendance') { data.classes.id(req.params.cid).attendances.push(req.body); }
+		else { res.status(400);	return res.send('Wrong type'); }
+		data.save(function(err, savedCourse){
+			if(err) { 
+				res.status(400);
+				return res.send(err); 
+			}
+			else {
+				res.status(201);
+				if (req.query.type == 'message') { return res.send('Message added'); }
+				if (req.query.type == 'attendance') { return res.send('Attendance added'); }
+			}
+		});
+	});
 });
 
 /* POST class by course id */
-router.route('/:id/classes').post(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      data.classes.push(req.body);
-      data.save(function(err, savedCourse){
-        if(err){ return res.send(err); }
-        else {
-            res.status(201);
-            res.send({ message: 'Class added' });
-        }
-      });
-    });
-});
-
-/* POST attendance by course and class id */
-router.route('/:id/classes/:cid/attendances').post(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      if (err) { return res.send(err) };
-      var lookup = {};
-      for (var i = 0, len = data.classes.length; i < len; i++) {
-          lookup[data.classes[i]._id] = data.classes[i];
-      }
-      lookup[req.params.cid].attendances.push(req.body);
-      data.save(function(err){
-        if(err){ return res.send(err); }
-        else {
-            res.status(201);
-            res.send({ message: 'Attendance added' });
-        }
-      });
-    });
+router.route('/:id').post(function(req, res) {
+	Course.findOne({ _id: req.params.id }, function(err, data){
+		if (err) { 
+			res.status(404);
+			return res.send(err);
+		}
+		if (data) {
+			data.classes.push(req.body);
+			data.save(function(err){
+				if(err) { 
+					res.status(400);
+					return res.send(err); 
+				}
+				else {
+					res.status(201);
+					return res.send('Class added'); 
+				}
+		  	});
+		}
+	});
 });
 
 /* PUT course by id */
 router.route('/:id/').put(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, course) {
-      if (err) { return res.send(err) };
-      course.update(req.body,function(err) {
-        if (err) { return res.send(err) };
-          res.status(200);
-          res.send({ message: 'Course updated' });
-      });
-    });
+	Course.findOne({ _id: req.params.id }, function(err, course) {
+		if (err) { return res.send(err); }
+		if (!course) {
+			res.status(404);
+			return res.send('Not found');
+		}
+		course.update(req.body,function(err) {
+			if (err) { 
+				res.status(400); 
+				return res.send(err); 
+			}
+			res.status(200);
+			return res.send('Course updated');
+		});
+	});
 });
 
 /* POST course */
 router.route('/').post(function(req, res) {
-    var course = new Course(req.body);
-    course.save(function(err) {
-      if (err) { return res.send(err) };
-      res.send({ message: 'Course added' });
-        res.status(201);
-    })
+	var course = new Course(req.body);
+	course.save(function(err) {
+		if (err) {
+			res.status(400);
+			return res.send(err);
+		}      	
+		res.status(201);
+		return res.send('Course added');
+	});
 });
 
 
 /* DELETE course by id */
 router.route('/:id/').delete(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, course) {	
-    	course.remove()
-    	res.status(200);
-    	res.send({ message: 'Course deleted'});
-  	});
+	Course.findOne({ _id: req.params.id }, function(err, course) {	
+		if (err) {
+			res.status(404);
+			return res.send(err);
+		}
+		if (!course) {
+			res.status(404); 
+			return res.send('Not found');
+		}
+		course.remove();
+		res.status(200);
+		return res.send('Course deleted');
+	});
 });
 
 /* DELETE class by course and class id */
 router.route('/:id/classes/:cid').delete(function(req, res) {
-    Course.findOne({ _id: req.params.id }, function(err, data){
-      for (var i = 0, len = data.classes.length; i < len; i++) {
-        if (data.classes[i]._id == req.params.cid) {
-          data.classes.splice(i,1);
-        }
-      }
-      data.save(function(err) {
-        if (err) { return res.send(err); }
-        res.send({ message: 'Class deleted'});
-        res.status(200);
-      });      
-    });
+	Course.findOne({ _id: req.params.id }, function(err, data){
+	  	if (err) {
+			res.status(404);
+			return res.send(err);
+		}
+		if (!data) {
+			res.status(404);
+			return res.send('Not found');
+		}
+		data.classes.id(req.params.cid).remove();
+	  	data.save(function(err) {
+			if (err) {
+				res.status(404);
+				return res.send(err);
+			}		
+			res.status(200);
+			return res.send('Class deleted');
+	  	});      
+	});
 });
 
 module.exports = router;

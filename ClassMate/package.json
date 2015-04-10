@@ -7,28 +7,29 @@
   "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec"
   },
   "dependencies": {
-    "body-parser": "~1.12.0",
-    "cookie-parser": "~1.3.4",
-    "debug": "~2.1.1",
-    "express": "~4.12.2",
-    "jade": "~1.9.2",
-    "morgan": "~1.5.1",
-    "serve-favicon": "~2.2.0",
-    "mongoose": "*",
-    "passport": "*",
-    "passport-google-oauth": "*",
-    "passport-local": "*",
-    "connect-flash": "*",
-    "connect-roles": "*",
-    "bcrypt-nodejs": "*",
-    "async":"*",
-    "express-session":"*",
-    "qr-image":"*",
-	"shortid":"*"
+    "body-parser": "1.12.0",
+    "cookie-parser": "1.3.4",
+    "debug": "2.1.1",
+    "express": "4.12.2",
+    "jade": "1.9.2",
+    "morgan": "1.5.1",
+    "serve-favicon": "2.2.0",
+    "mongoose": "4.0.1",
+    "passport": "0.2.1",
+    "passport-google-oauth": "0.2.0",
+    "passport-local": "1.0.0",
+    "connect-flash": "0.1.1",
+    "connect-roles": "3.1.1",
+    "bcrypt-nodejs": "0.0.3",
+    "async":"0.9.0",
+    "express-session":"1.10.4",
+    "qr-image":"3.1.0",
+	"shortid":"2.2.1"
   },
+  "engines": { "node" : "0.10.36" },
   "devDependencies": {
-    "chai": "^2.1.2",
-    "mocha": "^2.2.1",
-    "supertest": "^0.15.0"
+    "chai": "2.1.2",
+    "mocha": "2.2.1",
+    "supertest": "0.15.0"
   }
 }

@@ -20,18 +20,6 @@ var expect = require('chai').expect;
 var should = require('chai').should();
 
 describe('Testing courses GET requests', function(){
-	/*it('should drop and fill the database',function(done){
-		mongoose.connection.collections['courses'].drop( function(err) {
-		    console.log('collection dropped');
-		});
-
-		mongoose.connection.collections['users'].drop( function(err) {
-		    console.log('collection dropped');
-		});
-		require('../models/fillTestData')();
-		require('../models/fillTestData')();
-		done();
-	});*/
 	
 	it('should return a 404 status', function(done) {
 		request.get('/courses').expect(404).end(function(err,res) {
@@ -93,6 +81,8 @@ describe('Testing courses GET requests', function(){
 	it('should return a class', function(done){
 		request.get('/api/courses/').expect(200).end(function(err,res) {
 			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
+				console.log(result.body);
+				console.log('/api/courses/' + res.body.courses[0]._id + '/classes/');
 				request.get('/api/courses/' + res.body.courses[0]._id + '/classes/' + result.body.classes[0]._id).expect(200).end(function(error,response) {
 					if (error) { return done(error); }
 					expect(response.body).to.be.json;
