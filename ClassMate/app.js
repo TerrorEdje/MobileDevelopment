@@ -25,6 +25,7 @@ var routes = require('./routes/index');
 var auth = require('./routes/auth/index');
 var users = require('./routes/api/users');
 var courses = require('./routes/api/courses');
+var apple = require('./routes/api/apple');
 var api = require('./routes/api/api');
 
 
@@ -73,6 +74,7 @@ app.use('/', routes);
 app.use('/auth', auth);
 app.use('/api/users', users);
 app.use('/api/courses', courses);
+app.use('/api/apple', apple);
 app.use('/api', api);
 
 // catch 404 and forward to error handler
