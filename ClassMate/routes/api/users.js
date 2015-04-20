@@ -18,18 +18,18 @@ router.route('/').get(function(req, res) {
 	{
 		if (isNaN(req.query.page)) {
 			res.status(400);
-			return res.send('Page has to be a number');
+			return res.json('Page has to be a number');
 		}
 		page = { skip: 10 * req.query.page, limit: 10};
 	}
  	User.find({},selection,page, function(err, data){
- 		if (err) { res.status(404); return res.send(err) };
+ 		if (err) { res.status(404); return res.json(err) };
 		if (data.length == 0) {
 			res.status(404);
-			return res.send('Not found');
+			return res.json('Not found');
 		}
     	res.status(200);
-    	return res.send({ users: data});
+    	return res.json({ users: data});
   	});
 });
 
@@ -48,13 +48,13 @@ router.route('/:id').get(function(req, res) {
 		search = { subId: req.params.id };
 	}
 	User.findOne(search,selection, function(err, data){
-		if (err) { res.status(404); return res.send(err); }
+		if (err) { res.status(404); return res.json(err); }
 		if (!data) {
 			res.status(404);
-			return res.send('Not found'); 
+			return res.json('Not found'); 
 		}
 		res.status(200);
-		return res.send(data);
+		return res.json(data);
   	});
 });
 
@@ -63,19 +63,19 @@ router.route('/:id/').put(function(req, res) {
   	User.findOne({ _id: req.params.id }, function(err, user) {
   		if(err) { 
 			res.status(404);
-			return res.send(err); 
+			return res.json(err); 
 		}
 		if (!user) {
 			res.status(404);
-			return res.send('Not found');
+			return res.json('Not found');
 		}
     	user.save(req.body,function(err) {
     		if(err) { 
 				res.status(400);
-				return res.send(err); 
+				return res.json(err); 
 			}
 		    res.status(200);
-		    return res.send('User updated');
+		    return res.json('User updated');
 		});
   	});
 });
@@ -86,10 +86,10 @@ router.route('/').post(function(req, res) {
   	user.save(function(err) {
   		if(err) { 
 			res.status(400);
-			return res.send(err); 
+			return res.json(err); 
 		}  		
         res.status(201);
-        return res.send('User added');
+        return res.json('User added');
   	});
 });
 
@@ -98,39 +98,39 @@ router.route('/:id/courses/').post(function(req, res) {
   	Course.findOne({ subId: req.body.id}, function(err,course) {
     	if (!course) {
       		res.status(404);
-      		return res.send('Course not found.');
+      		return res.json('Course not found.');
     	}
     	if(err) { 
 			res.status(404);
-			return res.send(err); 
+			return res.json(err); 
 		}
 		User.findOne({ _id: req.params.id }, function(err, user) {
 			if (!user) {
 	      		res.status(404);
-	      		return res.send('User not found.');
+	      		return res.json('User not found.');
 	    	}
 	    	if(err) { 
 				res.status(404);
-				return res.send(err); 
+				return res.json(err); 
 			}
 			if (user.courses.indexOf(course._id) < 0) {	user.courses.push(course._id); }
-			else { res.status(400);	return res.send('User already subscribed to course.'); }
+			else { res.status(400);	return res.json('User already subscribed to course.'); }
 			if (course.participants.indexOf(user._id) < 0) { course.participants.push(user._id); }
-			else { res.status(400);	return res.send('Course already contains user'); }
+			else { res.status(400);	return res.json('Course already contains user'); }
 			user.save(function(err) {
 				if (err) {
 					res.status(400);
-					return res.send(err);
+					return res.json(err);
 				}
 			});
 			course.save(function(err) {
 				if (err) {
 					res.status(400);
-					return res.send(err);
+					return res.json(err);
 				}
 			});
 			res.status(201);
-			return res.send('User subscribed to course.');
+			return res.json('User subscribed to course.');
 		});
 	});	
 });
@@ -140,15 +140,15 @@ router.route('/:id/').delete(function(req, res) {
 	User.findOne({ _id: req.params.id }, function(err, user) {	
 		if (err) {
 			res.status(404);
-			return res.send(err);
+			return res.json(err);
 		}
 		if (!user) {
 			res.status(404); 
-			return res.send('Not found');
+			return res.json('Not found');
 		}
 		user.remove()
 		res.status(200);
-		return res.send('User deleted');
+		return res.json('User deleted');
 	});
 });
 module.exports = router;
