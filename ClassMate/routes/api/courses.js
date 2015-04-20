@@ -132,6 +132,7 @@ router.route('/:id/classes/:cid').post(function(req, res) {
 		res.status(400);
 		return res.send('Missing type');
 	}
+	console.log(req.body);
 	Course.findOne({ _id: req.params.id }, function(err, data){
 		if (err) { 
 			res.status(404);

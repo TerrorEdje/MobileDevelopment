@@ -7,7 +7,9 @@ var courseSchema = new Schema({
     subId: { type: String, unique: true, default: shortid.generate },
     name: { type: String, required: true },
     description: { type: String },
-    participants: [{ type: Schema.Types.ObjectId, unique: true, ref: 'User' }],
+    participants: [{
+        user: { type: Schema.Types.ObjectId, unique: true, ref: 'User' }
+    }],
     classes: [{
     	date: { type: Date },
     	location: { type: String },
