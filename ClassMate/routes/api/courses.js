@@ -19,13 +19,12 @@ router.route('/').get(function(req, res) {
 	var page = {};
 	if (req.query.page)	{
 		if (isNaN(req.query.page)) {
-    		res.status(400)
+			res.status(400)
 			return res.json('Page has to be a number');
 		}
 		page = { skip: 10 * req.query.page, limit: 10};
 	}
 	Course.find({}, selection, page, function(err, data){
-		if (err) { res.status(404); return res.json(err) };
 		if (data.length == 0) {
 			res.status(404);
 			return res.json('Not found');
@@ -55,7 +54,7 @@ router.route('/:id').get(function(req, res) {
 	}
 	Course.findOne(search,selection, function(err, data){
 		if(err) { 
-			res.status(404);
+			res.status(400);
 			return res.json(err); 
 		}
 		if (data) { 
@@ -79,7 +78,7 @@ router.route('/:id/classes').get(function(req, res) {
 	var attendances = (req.query.attendances === 'true');
 	Course.findOne({ _id: req.params.id },{ classes:1 }, function(err, data){
 		if (err) { 
-			res.status(404);
+			res.status(400);
 			return res.json(err); 
 		}
 		if (!data) {
