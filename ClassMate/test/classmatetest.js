@@ -37,6 +37,7 @@ describe('Filling variables', function(){
 			done();
 		});
 	});
+
 	it('should fill classe var', function(done){
 		request.get('/api/courses/' + course._id + '/classes/').expect(200).end(function(error,result) {
 			classe = result.body.classes[0];
@@ -169,7 +170,7 @@ describe('Testing courses', function(){
 			});
 		});
 
-		it('should return an error', function(done){
+		it('should return not found', function(done){
 			request.get('/api/courses/5534e74dc3d4c47c06f84633/classes').expect(404).end(function(error,result) {
 				if (error) { return done(error); }
 				expect(result.body).to.be.json;
@@ -189,226 +190,321 @@ describe('Testing courses', function(){
 
 	});
 
-});
-	/*it('should return a course', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			request.get('/api/courses/' + res.body.courses[0]._id).expect(200).end(function(error,result) {
+	describe('Testing /courses/:id/classes/:cid/ requests', function() {
+
+		it('should return a class with attendances and messages', function(done) {
+			request.get('/api/courses/' + course._id + '/classes/' + classe._id + '?messages=true&attendances=true').expect(200).end(function(error,result) {
 				if (error) { return done(error); }
 				expect(result.body).to.be.json;
 				(result.body).should.have.property('_id');
+				(result.body).should.have.property('messages');
+				(result.body).should.have.property('messages');
 				done();
 			});
-		});		
-	});
-
-	it('should return a full course array in json', function(done){
-		request.get('/api/courses/full').expect(200).end(function(err,res) {
-			if(err) { return done(err); }
-			expect(res.body).to.be.json;
-			expect(res.body).to.be.array;
-			(res.body).should.have.property('courses');
-	    	done();
 		});
-	});
-	it('should return a full course', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			request.get('/api/courses/' + res.body.courses[0]._id + '/full').expect(200).end(function(error,result) {
+
+		it('should return a class without attendances and messages', function(done) {
+			request.get('/api/courses/' + course._id + '/classes/' + classe._id).expect(200).end(function(error,result) {
 				if (error) { return done(error); }
 				expect(result.body).to.be.json;
 				(result.body).should.have.property('_id');
-				done();
-			});
-		});		
-	});
-
-	it('should return an array of classes', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
-				if (error) { return done(error); }
-				expect(result.body).to.be.json;
-				expect(result.body).to.be.array;
-				(result.body).should.have.property('classes');
-				done();
-			});
-		});		
-	});
-	it('should return a class', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
-				console.log(result.body);
-				console.log('/api/courses/' + res.body.courses[0]._id + '/classes/');
-				request.get('/api/courses/' + res.body.courses[0]._id + '/classes/' + result.body.classes[0]._id).expect(200).end(function(error,response) {
-					if (error) { return done(error); }
-					expect(response.body).to.be.json;
-					(response.body).should.have.property('_id');
-					done();
-				});
-			});
-		});		
-	});
-	it('should return an array of participants', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			request.get('/api/courses/' + res.body.courses[0]._id + '/participants/').expect(200).end(function(error,result) {
-				if (error) { return done(error); }
-				expect(result.body).to.be.json;
-				expect(result.body).to.be.array;
-				(result.body).should.have.property('participants');
-				done();
-			});
-		});		
-	});
-	it('should return an array of messages', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
-				request.get('/api/courses/' + res.body.courses[0]._id + '/classes/'+ result.body.classes[0]._id + '/messages/').expect(200).end(function(error,data) {
-					if (error) { return done(error); }
-					expect(data.body).to.be.json;
-					expect(data.body).to.be.array;
-					(data.body).should.have.property('messages');
-					done();
-				});
-			});
-		});		
-	});
-	it('should return an array of attendances', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			request.get('/api/courses/' + res.body.courses[0]._id + '/classes/').expect(200).end(function(error,result) {
-				request.get('/api/courses/' + res.body.courses[0]._id + '/classes/'+ result.body.classes[0]._id + '/attendances/').expect(200).end(function(error,data) {
-					if (error) { return done(error); }
-					expect(data.body).to.be.json;
-					expect(data.body).to.be.array;
-					(data.body).should.have.property('attendances');
-					done();
-				});
-			});
-		});		
-	});*/
-//});
-
-/*describe('Testing users GET requests', function(){
-	it('should return users', function(done){
-		request.get('/api/users/').expect(200).end(function(err,res) {
-			if (err) { return done(err); }
-			expect(res.body).to.be.json;
-			(res.body).should.have.property('users');
-			done();
-		});
-	});
-
-	it('should return a user', function(done){
-		request.get('/api/users/').expect(200).end(function(err,res) {
-			request.get('/api/users/' + res.body.users[0]._id).expect(200).end(function(err,res) {
-				if (err) { return done(err); }
-				expect(res.body).to.be.json;
-				(res.body).should.have.property('_id');
+				expect(result.body.messages).to.be.an('undefined');
+				expect(result.body.attendances).to.be.an('undefined');
 				done();
 			});
 		});
+
+		it('should return not found', function(done){
+			request.get('/api/courses/5534e74dc3d4c47c06f84633/classes/5534e74dc3d4c47c06f84633/').expect(404).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
+		it('should return an error', function(done){
+			request.get('/api/courses/5534e74dc3d4c47c06f84633test/classes/test').expect(400).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('message');
+				done();
+			});
+		});
+
+		it('should not found', function(done){
+			request.get('/api/courses/' + course._id + '/classes/5534e74dc3d4c47c06f84633').expect(404).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
 	});
+
+	describe('Testing /courses/:id/classes/:cid/ POST requests', function() {
+
+		it('should add a message', function(done) {
+			var message = { user: user._id, message: "This is an automated test" };
+			request.post('/api/courses/' + course._id + '/classes/' + classe._id + '?type=message').send(message).expect(201).end(function(error,result) {
+				expect(result.body).to.equal('Message added');
+				done();	
+			});
+		});
+
+		it('should add an attendance', function(done) {
+			var message = { user: user._id, reason: "This is an automated test", attendance: 2 };
+			request.post('/api/courses/' + course._id + '/classes/' + classe._id + '?type=attendance').send(message).expect(201).end(function(error,result) {
+				expect(result.body).to.equal('Attendance added');
+				done();	
+			});
+		});
+
+		it('should return missing type', function(done) {
+			var message = { user: user._id, reason: "This is an automated test", attendance: 2 };
+			request.post('/api/courses/' + course._id + '/classes/' + classe._id).send(message).expect(400).end(function(error,result) {
+				expect(result.body).to.equal('Missing type');
+				done();	
+			});
+		});
+
+		it('should return wrong type', function(done) {
+			var message = { user: user._id, reason: "This is an automated test", attendance: 2 };
+			request.post('/api/courses/' + course._id + '/classes/' + classe._id + '?type=wrongtype').send(message).expect(400).end(function(error,result) {
+				expect(result.body).to.equal('Wrong type');
+				done();	
+			});
+		});
+
+
+		it('should return an error', function(done) {
+			var message = { user: user._id, message: "This is an automated test" };
+			request.post('/api/courses/' + course._id + 'test/classes/' + classe._id + '?type=message').send(message).expect(400).end(function(error,result) {
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('message');
+				done();	
+			});
+		});
+
+		it('should return not found', function(done) {
+			var message = { user: user._id, message: "This is an automated test" };
+			request.post('/api/courses/5534e74dc3d4c47c06f84633/classes/' + classe._id + '?type=message').send(message).expect(400).end(function(error,result) {
+				expect(result.body).to.equal('Not found');
+				done();	
+			});
+		});
+
+		it('should return a validation error', function(done) {
+			var message = { reason: "This is an automated test", attendance: 2 };
+			request.post('/api/courses/' + course._id + '/classes/' + classe._id + '?type=attendance').send(message).expect(400).end(function(error,result) {
+				expect(result.body.name).to.equal('ValidationError');
+				done();
+			});
+		});
+
+	});
+
+	describe('Testing /courses/:id/ POST requests', function() {
+
+		it('should add a class',function(done) {
+			var classee = { location: "OB202", description: "This is an automated test"};
+			request.post('/api/courses/' + course._id).send(classee).expect(201).end(function(error,result) {
+				expect(result.body).to.equal('Class added');
+				done();
+			});
+		});
+
+		it('should return an error',function(done) {
+			var classee = { location: "OB202", description: "This is an automated test"};
+			request.post('/api/courses/test' + course._id).send(classee).expect(400).end(function(error,result) {
+				(result.body).should.have.property('message');
+				done();
+			});
+		});
+
+		it('should return not found',function(done) {
+			var classee = { location: "OB202", description: "This is an automated test"};
+			request.post('/api/courses/5534e74dc3d4c47c06f84633').send(classee).expect(400).end(function(error,result) {
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
+		it('should return a validation error',function(done) {
+			var classee = { date: "hoi", location: "OB202", description: "This is an automated test"};
+			request.post('/api/courses/' + course._id).send(classee).expect(400).end(function(error,result) {
+				expect(result.body.name).to.equal('ValidationError');
+				done();
+			});
+		});
+
+	});
+
+	describe('Testing /courses/ PUT requests', function() {
+
+		var coursebroken;
+		it('should fill coursebroken var', function(done){
+			request.get('/api/courses?classes=true&participants=true').expect(200).end(function(err,res) {
+				coursebroken = res.body.courses[0];
+				done();
+			});
+		});
+
+		it('should update a course',function(done) {
+			request.put('/api/courses/').send(course).expect(200).end(function(err, result){
+				expect(result.body).to.equal('Course updated');
+				done();			
+			});
+		});
+
+		it('should return an error (bad course send)',function(done) {
+			coursebroken.creator = 'test';
+			request.put('/api/courses/').send(coursebroken).expect(400).end(function(err, result){
+				(result.body).should.have.property('message');
+				done();			
+			});
+		});
+
+		it('should return an error (cannot find the course)',function(done) {
+			coursebroken._id = coursebroken._id + 'test';
+			request.put('/api/courses/').send(coursebroken).expect(400).end(function(err, result){
+				(result.body).should.have.property('message');
+				done();			
+			});
+		});
+
+		it('should return not found',function(done) {
+			coursebroken._id =  '5534e74dc3d4c47c06f84633';
+			request.put('/api/courses/').send(coursebroken).expect(404).end(function(err, result){
+				expect(result.body).to.equal('Not found');
+				done();			
+			});
+		});
+
+	});
+
+	describe('Testing /courses/ POST requests', function() {
+
+		it('should add a course',function(done) {
+			postcourse = { creator: user._id, name: "This is an automated test.", description: "This is an automated test." };
+			request.post('/api/courses/').send(postcourse).expect(201).end(function(err, result){
+				expect(result.body).to.equal('Course added');
+				done();
+			});
+		});
+
+		it('should return an validation error',function(done) {
+			postcourse = { creator: user._id, description: "This is an automated test." };
+			request.post('/api/courses/').send(postcourse).expect(201).end(function(err, result){
+				expect(result.body.name).to.equal('ValidationError');
+				done();
+			});
+		});
+
+	});
+
+	describe('Testing /courses/:id/ DELETE requests', function() {
+
+		var coursedelete;
+
+		it('should add a course',function(done) {
+			postcourse = { creator: user._id, name: "This is an automated test.", description: "This is an automated test." }
+			request.post('/api/courses/').send(postcourse).expect(201).end(function(err, result){
+				expect(result.body).to.equal('Course added');
+				done();
+			});
+		});
+
+		it('should fill coursedelete var', function(done){
+			request.get('/api/courses?classes=true&participants=true').expect(200).end(function(err,result) {
+				coursedelete = result.body.courses[1];
+				done();
+			});
+		});
+
+		it('should delete a course',function(done) {
+			request.delete('/api/courses/' + coursedelete._id).expect(200).end(function(err,result) {
+				expect(result.body).to.equal('Course deleted');
+				done();
+			});
+		});
+
+		it('should return not found',function(done) {
+			request.delete('/api/courses/5534e74dc3d4c47c06f84633').expect(404).end(function(err,result) {
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
+		it('should return an error',function(done) {
+			request.delete('/api/courses/5534e74dc3d4c47c06f84633test').expect(400).end(function(err,result) {
+				(result.body).should.have.property('message');
+				done();
+			});
+		});
+
+	});
+
+	describe('Testing /courses/:id/classes/:cid/ DELETE requests', function() {
+
+		var coursedelete;
+
+		it('should add a course with a class',function(done) {
+			postcourse = { creator: user._id, name: "This is an automated test.", description: "This is an automated test.",classes: [{
+								date: new Date(),
+								location: 'OB209',
+								description: 'Presentatie',
+								messages: [{
+									user: user._id,
+									message: 'Usually nobody comes, so who is coming today?'
+								}],
+								attendances: [{
+									user: user._id
+								}]
+							}] };
+			request.post('/api/courses/').send(postcourse).expect(201).end(function(err, result){
+				expect(result.body).to.equal('Course added');
+				done();
+			});
+		});
+
+		it('should fill coursedelete var', function(done){
+			request.get('/api/courses?classes=true&participants=true').expect(200).end(function(err,result) {
+				coursedelete = result.body.courses[result.body.courses.length-1];
+				done();
+			});
+		});
+
+		it('should delete a class',function(done) {
+			request.delete('/api/courses/' + coursedelete._id + '/classes/' + coursedelete.classes[0]._id).expect(200).end(function(err,result) {
+				expect(result.body).to.equal('Class deleted');
+				done();
+			});
+		});
+
+		it('should return not found',function(done) {
+			request.delete('/api/courses/5534e74dc3d4c47c06f84633/classes/5534e74dc3d4c47c06f84633').expect(404).end(function(err,result) {
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
+		it('should return an error',function(done) {
+			request.delete('/api/courses/5534e74dc3d4c47c06f84633test/classes/5534e74dc3d4c47c06f84633').expect(400).end(function(err,result) {
+				(result.body).should.have.property('message');
+				done();
+			});
+		});
+
+		it('should return an error',function(done) {
+			request.delete('/api/courses/'+ coursedelete._id +'/classes/5534e74dc3d4c47c06f84633').expect(404).end(function(err,result) {
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
+
+	});
+
 });
-
-describe('Testing POST, PUT and DELETE requests', function(){
-	var course;
-	var classe;
-	var user;
-	it('should fill user var', function(done){
-		request.get('/api/users/').expect(200).end(function(err,res) {
-			user = res.body.users[0];
-			done();
-		});
-	});
-
-	it('should fill course var', function(done){
-		request.get('/api/courses/').expect(200).end(function(err,res) {
-			course = res.body.courses[0];
-			done();
-		});
-	});
-	it('should fill classe var', function(done){
-		request.get('/api/courses/' + course._id + '/classes/').expect(200).end(function(error,result) {
-			classe = result.body.classes[0];
-			done();
-		});
-	});
-
-	it('should subscribe a user to a course', function(done) {
-		request.get('/api/users/' + user._id + 'courses').send('_id' + course._id).expect(200).end(function(err,res){
-			console.log(res.body);
-			(res.body).should.have.property('message','Course added to User and User added to Course.');
-			done();
-		});
-	});
-
-	it('should add a new message', function(done){
-		request.post('/api/courses/' + course._id + '/classes/' + classe._id + '/messages').send('user='+ user._id).send('message','This is a new test message').expect(201).end(function(err, res){
-			(res.body).should.have.property('message','Message added');
-			done();			
-		});
-	});
-
-	it('should add a new attendance', function(done){
-		request.post('/api/courses/' + course._id + '/classes/' + classe._id + '/attendances').send('user='+ user._id).expect(201).end(function(err, res){
-			(res.body).should.have.property('message','Attendance added');
-			done();			
-		});
-	});
-
-	it('should add a new participant', function(done){
-		request.post('/api/courses/' + course._id + '/participants').send('user='+ user._id).expect(201).end(function(err, res){
-			(res.body).should.have.property('message','Participant added');
-			done();			
-		});
-	});
-
-	it('should add a new course', function(done){
-		request.post('/api/courses/').send('creator=' + user._id).send('name=MobileDevelopment1').send('description=Buildinghybridapps').expect(201).end(function(err, res){
-			(res.body).should.have.property('message','Course added');
-			done();			
-		});
-	});
-
-	it('should add a new user', function(done){
-		request.post('/api/users/').send('name=Edwin Hattink').expect(201).end(function(err, res){
-			(res.body).should.have.property('message','User added');
-			done();			
-		});
-	});
-
-	it('should update a course', function(done){
-		course.name = 'mobile development 500';
-		request.put('/api/courses/' + course._id).send(course).expect(200).end(function(err, res){
-			(res.body).should.have.property('message','Course updated');
-			done();			
-		});
-	});
-
-	it('should delete a course', function(done) {
-		request.post('/api/courses/').send('creator=' + user._id).send('name=MobileDevelopment1').send('description=Buildinghybridapps').expect(201).end(function(err, res){
-			request.get('/api/courses/').expect(200).end(function(err,res) {
-				var lookup;
-      			for (var i = 0, len = res.body.courses.length; i < len; i++) {
-      				if (res.body.courses[i].name == 'MobileDevelopment1') { lookup = res.body.courses[i]; }
-      			}
-				request.delete('/api/courses/' + lookup._id).expect(200).end(function(err,res) {
-					(res.body).should.have.property('message','Course deleted');
-					done();	
-				});
-			});		
-		});
-	});
-
-	it('should delete a user', function(done) {
-		request.post('/api/users/').send('name=Edwin Hattink').expect(200).end(function(err, res){
-			request.get('/api/users/').expect(200).end(function(err,res) {
-				var lookup;
-      			for (var i = 0, len = res.body.users.length; i < len; i++) {
-      				if (res.body.users[i].name == 'Edwin Hattink') { lookup = res.body.users[i]; }
-      			}
-				request.delete('/api/users/' + lookup._id).expect(200).end(function(err,res) {
-					(res.body).should.have.property('message','User deleted');
-					done();	
-				});			
-			});		
-		});
-	});
-});*/

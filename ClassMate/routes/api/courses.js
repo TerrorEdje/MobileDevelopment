@@ -102,17 +102,23 @@ router.route('/:id/classes').get(function(req, res) {
 router.route('/:id/classes/:cid').get(function(req, res) {
 	var messages = (req.query.messages === 'true');
 	var attendances = (req.query.attendances === 'true');
-	Course.findOne({ _id: req.params.id },{ classes:1 }, function(err, data){
+	Course.findOne({ _id: req.params.id },{ classes:1 }, function(err, data) {
 		if (err) { 
-			res.status(404);
+			res.status(400);
 			return res.json(err);			
 		}
 		if (data) {
 			var classe = data.classes.id(req.params.cid);
-			if (!messages) { classe.messages = undefined; }
-			if (!attendances) { classe.attendances = undefined; }     		
-			res.status(200);
-			return res.json(classe);
+			if (classe) {
+				if (!messages) { classe.messages = undefined; }
+				if (!attendances) { classe.attendances = undefined; }
+				res.status(200);
+				return res.json(classe);
+			}
+			else {
+				res.status(404);
+				return res.json('Not found');
+			}			
 		}      
 		else {
 			res.status(404);
@@ -131,10 +137,9 @@ router.route('/:id/classes/:cid').post(function(req, res) {
 		res.status(400);
 		return res.json('Missing type');
 	}
-	console.log(req.body);
 	Course.findOne({ _id: req.params.id }, function(err, data){
 		if (err) { 
-			res.status(404);
+			res.status(400);
 			return res.json(err); 
 		}
 		if (!data) {
@@ -152,7 +157,7 @@ router.route('/:id/classes/:cid').post(function(req, res) {
 			else {
 				res.status(201);
 				if (req.query.type == 'message') { return res.json('Message added'); }
-				if (req.query.type == 'attendance') { return res.json('Attendance added'); }
+				else { return res.json('Attendance added'); }
 			}
 		});
 	});
@@ -162,7 +167,7 @@ router.route('/:id/classes/:cid').post(function(req, res) {
 router.route('/:id').post(function(req, res) {
 	Course.findOne({ _id: req.params.id }, function(err, data){
 		if (err) { 
-			res.status(404);
+			res.status(400);
 			return res.json(err);
 		}
 		if (data) {
@@ -178,12 +183,17 @@ router.route('/:id').post(function(req, res) {
 				}
 		  	});
 		}
+		else
+		{
+			res.status(404);
+			return res.json('Not found');
+		}
 	});
 });
 
 /* PUT course by id */
-router.route('/:id/').put(function(req, res) {
-	Course.findOne({ _id: req.params.id }, function(err, course) {
+router.route('/').put(function(req, res) {
+	Course.findOne({ _id: req.body._id }, function(err, course) {
 		if (err) { return res.json(err); }
 		if (!course) {
 			res.status(404);
@@ -218,7 +228,7 @@ router.route('/').post(function(req, res) {
 router.route('/:id/').delete(function(req, res) {
 	Course.findOne({ _id: req.params.id }, function(err, course) {	
 		if (err) {
-			res.status(404);
+			res.status(400);
 			return res.json(err);
 		}
 		if (!course) {
@@ -242,12 +252,14 @@ router.route('/:id/classes/:cid').delete(function(req, res) {
 			res.status(404);
 			return res.json('Not found');
 		}
-		data.classes.id(req.params.cid).remove();
+		if (data.classes.id(req.params.cid)) {
+			data.classes.id(req.params.cid).remove();
+		}
+		else {
+			res.status(404);
+			return res.json('Not found');
+		}		
 	  	data.save(function(err) {
-			if (err) {
-				res.status(404);
-				return res.json(err);
-			}		
 			res.status(200);
 			return res.json('Class deleted');
 	  	});      
