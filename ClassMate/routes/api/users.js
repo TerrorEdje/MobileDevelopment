@@ -23,7 +23,6 @@ router.route('/').get(function(req, res) {
 		page = { skip: 10 * req.query.page, limit: 10};
 	}
  	User.find({},selection,page, function(err, data){
- 		if (err) { res.status(404); return res.json(err) };
 		if (data.length == 0) {
 			res.status(404);
 			return res.json('Not found');
@@ -48,7 +47,7 @@ router.route('/:id').get(function(req, res) {
 		search = { subId: req.params.id };
 	}
 	User.findOne(search,selection, function(err, data){
-		if (err) { res.status(404); return res.json(err); }
+		if (err) { res.status(400); return res.json(err); }
 		if (!data) {
 			res.status(404);
 			return res.json('Not found'); 
@@ -59,10 +58,10 @@ router.route('/:id').get(function(req, res) {
 });
 
 /* PUT user by id */
-router.route('/:id/').put(function(req, res) {
-  	User.findOne({ _id: req.params.id }, function(err, user) {
+router.route('/').put(function(req, res) {
+  	User.findOne({ _id: req.body._id }, function(err, user) {
   		if(err) { 
-			res.status(404);
+			res.status(400);
 			return res.json(err); 
 		}
 		if (!user) {
@@ -70,10 +69,6 @@ router.route('/:id/').put(function(req, res) {
 			return res.json('Not found');
 		}
     	user.save(req.body,function(err) {
-    		if(err) { 
-				res.status(400);
-				return res.json(err); 
-			}
 		    res.status(200);
 		    return res.json('User updated');
 		});
@@ -100,35 +95,25 @@ router.route('/:id/courses/').post(function(req, res) {
       		res.status(404);
       		return res.json('Course not found.');
     	}
-    	if(err) { 
-			res.status(404);
-			return res.json(err); 
-		}
 		User.findOne({ _id: req.params.id }, function(err, user) {
+			if(err) { 
+				res.status(400);
+				return res.json(err); 
+			}
 			if (!user) {
 	      		res.status(404);
 	      		return res.json('User not found.');
 	    	}
-	    	if(err) { 
-				res.status(404);
-				return res.json(err); 
+			if (user.courses.indexOf(course._id) < 0) {	
+				user.courses.push(course._id); 
+				course.participants.push(user._id); 
 			}
-			if (user.courses.indexOf(course._id) < 0) {	user.courses.push(course._id); }
-			else { res.status(400);	return res.json('User already subscribed to course.'); }
-			if (course.participants.indexOf(user._id) < 0) { course.participants.push(user._id); }
-			else { res.status(400);	return res.json('Course already contains user'); }
-			user.save(function(err) {
-				if (err) {
-					res.status(400);
-					return res.json(err);
-				}
-			});
-			course.save(function(err) {
-				if (err) {
-					res.status(400);
-					return res.json(err);
-				}
-			});
+			else { 
+				res.status(400);	
+				return res.json('User already subscribed to course.'); 
+			}
+			user.save();
+			course.save();
 			res.status(201);
 			return res.json('User subscribed to course.');
 		});

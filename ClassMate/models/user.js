@@ -7,7 +7,7 @@ var shortid = require('shortid');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
     subId: { type: String, unique: true, default: shortid.generate },
-	name: String,
+	name: { type: String, required: true },
     local            : {
         email        : String,
         password     : String,

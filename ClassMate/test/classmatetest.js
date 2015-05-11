@@ -22,11 +22,12 @@ var should = require('chai').should();
 var course;
 var classe;
 var user;
+
 describe('Filling variables', function(){
 
 	it('should fill user var', function(done){
 		request.get('/api/users/').expect(200).end(function(err,res) {
-			user = res.body.users[0];
+			user = res.body.users[1];
 			done();
 		});
 	});
@@ -503,8 +504,244 @@ describe('Testing courses', function(){
 				done();
 			});
 		});
+	});
+});
+describe('Testing users', function(){
 
+	describe('Testing /courses/ GET requests', function() {
+
+		it('should return a user array', function(done){
+			request.get('/api/users/').expect(200).end(function(err,res) {
+				expect(res.body).to.be.json;
+				expect(res.body).to.be.array;
+				(res.body).should.have.property('users');
+			   	done();
+			});
+		});
+
+		it('should return a user array with courses', function(done){
+			request.get('/api/users?courses=true').expect(200).end(function(err,res) {
+				expect(res.body).to.be.json;
+				expect(res.body).to.be.array;
+				(res.body).should.have.property('users');
+				(res.body.users[1]).should.have.property('courses');
+				expect(res.body.users[1].courses).to.be.array;
+			   	done();
+			});
+		});
+
+		it('should return not found', function(done){
+			request.get('/api/users?page=999').expect(404).end(function(err,res) {
+				expect(res.body).to.be.json;
+				expect(res.body).to.be.array;
+				expect(res.body).to.equal('Not found');
+		    	done();
+			});
+		});
+
+		it('should return page has to be a number', function(done){
+			request.get('/api/users?page=lol').expect(400).end(function(err,res) {
+				expect(res.body).to.be.json;
+				expect(res.body).to.be.array;
+				expect(res.body).to.equal('Page has to be a number');
+		    	done();
+			});
+		});
+	});
+
+	describe('Testing /users/ GET requests', function() {
+
+		it('should return a user', function(done){
+			request.get('/api/users/' + user._id).expect(200).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('_id');
+				done();
+			});
+		});
+
+		it('should return a user with courses', function(done){
+			request.get('/api/users/' + user._id + "?courses=true").expect(200).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('_id');
+				(result.body).should.have.property('courses');
+				done();
+			});
+		});
+
+		it('should return not found', function(done){
+			request.get('/api/users/5534e74dc3d4c47c06f84633').expect(404).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
+		it('should return an error', function(done){
+			request.get('/api/users/' + user._id + "test").expect(400).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('message');
+				done();
+			});
+		});
+
+		it('should return a user found with subid', function(done){
+			request.get('/api/users/' + user.subId + '?type=subId').expect(200).end(function(error,result) {
+				if (error) { return done(error); }
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('_id');
+				done();
+			});
+		});
 
 	});
+
+	describe('Testing /users/ PUT requests', function() {
+
+		var userbroken;
+		it('should fill userbroken var', function(done){
+			request.get('/api/users?courses=true').expect(200).end(function(err,res) {
+				userbroken = res.body.users[0];
+				done();
+			});
+		});
+
+		it('should update a course',function(done) {
+			request.put('/api/users/').send(user).expect(200).end(function(err, result){
+				expect(result.body).to.equal('User updated');
+				done();			
+			});
+		});
+
+		it('should return an error (cannot find the user)',function(done) {
+			userbroken._id = userbroken._id + 'test';
+			request.put('/api/users/').send(userbroken).expect(400).end(function(err, result){
+				(result.body).should.have.property('message');
+				done();			
+			});
+		});
+
+		it('should return not found',function(done) {
+			userbroken._id =  '5534e74dc3d4c47c06f84633';
+			request.put('/api/users/').send(userbroken).expect(404).end(function(err, result){
+				expect(result.body).to.equal('Not found');
+				done();			
+			});
+		});
+
+	});
+
+	describe('Testing /users/ POST requests', function() {
+
+		it('should add a course',function(done) {
+			postuser = { name: "This is an automated test." };
+			request.post('/api/users/').send(postuser).expect(201).end(function(err, result){
+				expect(result.body).to.equal('User added');
+				done();
+			});
+		});
+
+		it('should return an validation error',function(done) {
+			postuser = { };
+			request.post('/api/users/').send(postuser).expect(201).end(function(err, result){
+				expect(result.body.name).to.equal('ValidationError');
+				done();
+			});
+		});
+
+	});
+
+	describe('Testing /users/:id/courses',function() {
+
+		var usercourse;
+		it('should fill usercourse var', function(done){
+			request.get('/api/users?courses=true').expect(200).end(function(err,res) {
+				usercourse = res.body.users[res.body.users.length-1];
+				done();
+			});
+		});
+
+		it('should return user already subscribed to course', function(done) {
+			request.post('/api/users/' +  user._id + '/courses').send({ id: course.subId }).expect(400).end(function(err,result) {
+				expect(result.body).to.equal('User already subscribed to course.');
+				done();
+			});
+		});
+
+		it('should subscribe user to course', function(done) {
+			request.post('/api/users/' +  usercourse._id + '/courses').send({ id: course.subId }).expect(200).end(function(err,result) {
+				expect(result.body).to.equal('User subscribed to course.');
+				done();
+			});
+		});
+
+		it('should return user not found ', function(done) {
+			request.post('/api/users/5534e74dc3d4c47c06f84633/courses').send({ id: course.subId }).expect(404).end(function(err,result) {
+				expect(result.body).to.equal('User not found.');
+				done();
+			});
+		});
+
+		it('should return course not found', function(done) {
+			request.post('/api/users/' +  usercourse._id + '/courses').send({ id: course.subId + 'test' }).expect(404).end(function(err,result) {
+				expect(result.body).to.equal('Course not found.');
+				done();
+			});
+		});
+
+		it('should return an error', function(done) {
+			request.post('/api/users/' +  usercourse._id + 'test/courses').send({ id: course.subId }).expect(400).end(function(err,result) {
+				(result.body).should.have.property('message');
+				done();
+			});
+		});
+
+	});
+
+	describe('Testing /users/:id/ DELETE requests', function() {
+
+		var userdelete;
+
+		it('should add a user',function(done) {
+			postuser = { name: "This is an automated test."}
+			request.post('/api/users/').send(postcourse).expect(201).end(function(err, result){
+				expect(result.body).to.equal('User added');
+				done();
+			});
+		});
+
+		it('should fill userdelete var', function(done){
+			request.get('/api/users?classes=true&participants=true').expect(200).end(function(err,result) {
+				userdelete = result.body.users[4];
+				done();
+			});
+		});
+
+		it('should delete a course',function(done) {
+			request.delete('/api/users/' + userdelete._id).expect(200).end(function(err,result) {
+				expect(result.body).to.equal('User deleted');
+				done();
+			});
+		});
+
+		it('should return not found',function(done) {
+			request.delete('/api/users/5534e74dc3d4c47c06f84633').expect(404).end(function(err,result) {
+				expect(result.body).to.equal('Not found');
+				done();
+			});
+		});
+
+		it('should return an error',function(done) {
+			request.delete('/api/users/5534e74dc3d4c47c06f84633test').expect(400).end(function(err,result) {
+				(result.body).should.have.property('message');
+				done();
+			});
+		});
+
+	});
+
 
 });
