@@ -37,7 +37,7 @@ router.route('/').get(function(req, res) {
 	type: id or subId (default id)
 	courses: true or false (default false)
 */
-router.route('/:id').get(function(req, res) {
+router.route('/:id/').get(function(req, res) {
 	var selection = { courses:0 };
 	if (req.query.courses === 'true') {
 		delete selection.courses;
@@ -54,6 +54,33 @@ router.route('/:id').get(function(req, res) {
 		}
 		res.status(200);
 		return res.json(data);
+  	});
+});
+
+router.route('/:id/courses/').get(function(req, res) {
+	var selection = { courses:0 };
+	if (req.query.courses === 'true') {
+		delete selection.courses;
+	}
+	var search = { _id: req.params.id };
+	if (req.query.type === 'subId')	{
+		search = { subId: req.params.id };
+	}
+	User.findOne(search,selection, function(err, data){
+		if (err) { res.status(400); return res.json(err); }
+		if (!data) {
+			res.status(404);
+			return res.json('Not found'); 
+		}
+		var selection = { classes:0, participants:0 };
+		Course.find({ participants : data._id},selection, function(err, result){
+			if (data.length == 0) {
+				res.status(404);
+				return res.json('Not found');
+			}
+			res.status(200); 
+			return res.json({ courses: result});
+		});
   	});
 });
 
