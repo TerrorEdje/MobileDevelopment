@@ -508,7 +508,7 @@ describe('Testing courses', function(){
 });
 describe('Testing users', function(){
 
-	describe('Testing /courses/ GET requests', function() {
+	describe('Testing /users/ GET requests', function() {
 
 		it('should return a user array', function(done){
 			request.get('/api/users/').expect(200).end(function(err,res) {
@@ -547,6 +547,35 @@ describe('Testing users', function(){
 		    	done();
 			});
 		});
+	});
+
+describe('Testing /users/:id/courses GET requests', function() {
+
+		it('should return a course array', function(done){
+			request.get('/api/users/' + user._id + '/courses/').expect(200).end(function(err,res) {
+				expect(res.body).to.be.json;
+				expect(res.body).to.be.array;
+				(res.body).should.have.property('courses');
+			   	done();
+			});
+		});
+
+		it('should return a course array', function(done){
+			request.get('/api/users/5534e74dc3d4c47c06f84633/courses/').expect(404).end(function(err,res) {
+				expect(res.body).to.be.json;
+				expect(res.body).to.equal('Not found');
+			   	done();
+			});
+		});
+
+		it('should return a course array', function(done){
+			request.get('/api/users/' + user._id + 'blahblah/courses/').expect(400).end(function(err,result) {
+				expect(result.body).to.be.json;
+				(result.body).should.have.property('message');
+			   	done();
+			});
+		});
+
 	});
 
 	describe('Testing /users/ GET requests', function() {
