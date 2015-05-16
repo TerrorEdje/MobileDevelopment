@@ -4,7 +4,7 @@ var passport = require('passport');
 
 // GET home page.
 router.get('/', isLoggedIn, function(req, res, next) {
-  res.render('index', { page: 'overview', title: 'Overview', user: req.user });
+  res.render('index', { page: 'home', title: 'Home', user: req.user });
 });
 
 router.get('/login', function(req, res) {

@@ -20,8 +20,8 @@ block content
             th Class nr.
             th Location
             th Description
-            th Edit
-            th Delete
+            th Date
+            th Time
           tbody
         a(class="btn btn-info showMyCourses") Back
       //Make a new Course
@@ -52,8 +52,6 @@ block content
           thead
             th Name
             th Description
-            th Edit
-            th Delete
           tbody
       //Subscribe to a course
       div(id="subscribeCourse" class="myPage")
@@ -89,6 +87,7 @@ block content
                 label.col-md-4.control-label(for='submit')
                 .col-md-4
                   input(type="hidden", name="creator", value="#{ user._id }")
+                  input(id= "editid", type="hidden", name="_id")
                   button#updateCourse.btn.btn-default(name='submit') Edit Course
       //Create a new Class
       div(id="addClass" class="myPage")

@@ -20,6 +20,9 @@ html
             ul(class="nav navbar-nav navbar-right")
               li 
                 a Welcome #{user.name}
+                input(id= "userid", type="hidden", value='#{user.id}')
+              li
+                a Mobile login code: #{user.subId}
               li
                 a(href="/auth/logout") Logout
 
@@ -27,12 +30,12 @@ html
         div(class="row")
           div(class="col-sm-3 col-md-2 sidebar")
             ul(class="nav nav-sidebar")
-              if page == "overview"
+              if page == "home"
                 li(class="active")
-                  a(href="/") Overview
+                  a(href="/") Home
               else
                 li
-                  a(href="/") Overview
+                  a(href="/") Home
               if page == "courses"
                 li(class="active")
                   a Courses
