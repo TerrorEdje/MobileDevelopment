@@ -38,6 +38,13 @@ function showMyCourses() {
     $("#myCoursesList").show();
 };
 
+function showMySubscribedCourses() {
+    $(".message").val("");
+    $(".myPage").hide();
+    populateSubscribed();
+    $("#mySubscribedCoursesList").show();
+};
+
 $(document.body).on('click', '.linkshowcourse', showCourseInfo);
 $(document.body).on('click','.linkeditcourse',editCourse);
 $(document.body).on('click','.linkdeletecourse',deleteCourse);
@@ -229,7 +236,7 @@ $('#subscribe').click(function(event) {
     event.preventDefault();
     var form = $(this).closest('form').serialize();
     $.post('/api/users/' + $('#subscribeUserId').val() + '/courses', { id: $('#key').val() })
-    .done( function(msg) { showMyCourses(); $(".form-horizontal")[0].reset(); } )
+    .done( function(msg) { showMySubscribedCourses(); $(".form-horizontal")[0].reset(); } )
     .fail( function(xhr, textStatus, errorThrown) {
         $('.message').text(xhr.responseText.replace('"','').replace('"',''));
     });
