@@ -24,8 +24,8 @@ var courseSchema = new Schema({
     		time: { type: Date, default: Date.now },
     		arrivalTime: { type: Date },
     		location : {
-    			type: [String], // [<longitude>],[<latitude>]
-    			index: '2d' // create the geospatial index
+    			lat:  { type: String}, 
+    			long: { type: String}
     		}
     	}]
     }]
